@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+<head>
+<title>Lego Tracker</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+table {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  border-spacing: 0px;
+}
+td {
+  padding: 5px;
+}
+input {
+  font-size: 8pt;
+}
+.titlerow {
+  font-weight: bold;
+  font-size: 20pt;
+  background: #ebd42d;
+}
+.headerrow {
+  background: #3474eb;
+  color: white;
+  font-weight: bold;
+  font-size: 10pt;
+}
+.itemrow {
+  font-size: 8pt;
+}
+.striped {
+  background: #dcdcdc;
+}
+.pricecell {
+  text-align: right;
+}
+</style>
+<script>
+LegoSet.prototype.Element;
+LegoSet.prototype.CheckElement;
+LegoSet.prototype.HaveElement;
+
+LegoSet.prototype.CreateRow = function() {
+  this.Element = document.createElement('tr');
+  
+  var tdelem = document.createElement('td');
+  this.HaveElement = document.createElement('input');
+  this.HaveElement['type'] = 'checkbox';
+  this.HaveElement['checked'] = this['have'];
+  this.HaveElement.addEventListener('change', this.ChangeTrack.bind(this));
+  tdelem.appendChild(this.HaveElement);
+  this.Element.appendChild(tdelem);
+  
+  tdelem = document.createElement('td');
+  this.CheckElement = document.createElement('input');
+  this.CheckElement['type'] = 'checkbox';
+  this.CheckElement['checked'] = this['tracked'];
+  this.CheckElement.addEventListener('change', this.ChangeTrack.bind(this));
+  tdelem.appendChild(this.CheckElement);
+  this.Element.appendChild(tdelem);
+  
+  for (var g in columns)
+  {
+    tdelem = document.createElement('td');
+    if (columns[g] == "name")
+    {
+      var aelem = document.createElement('a');
+      aelem['href'] = 'https://lego.com/en-us/product/' + this["setid"];
+      aelem['target'] = '_blank';
+      aelem.innerText = this[columns[g]];
+      tdelem.appendChild(aelem);
+    }
+    else
+    {
+      var string = this[columns[g]];
+      if (columns[g] == "retiring" || columns[g] == "new")
+      {
+        tdelem['style'] = "text-align: center;"
+        if (this[columns[g]] == "1")
+          string = "Yes";
+        else
+          string = "";
+      }
+      else if (columns[g] == "discount")
+      {
+        tdelem.className = "pricecell";
+        if (this[columns[g]] > 0)
+          string = (this[columns[g]] * 100) + '%';
+        else
+          string = "";
+      }
+      else if (columns[g] == "price" || columns[g] == "originalprice")
+      {
+        tdelem.className = "pricecell";
+        string = '$' + this[columns[g]];
+      }
+      tdelem.appendChild(document.createTextNode(string));
+    }
+    this.Element.appendChild(tdelem);
+  }
+}
+
+LegoSet.prototype.ChangeTrack = function() {
+  this['tracked'] = this.CheckElement['checked'];
+  this['have'] = this.HaveElement['checked'];
+  GetRequest('lego.py', '{ "setid": ' + this['setid'] + ', "tracked":' + this['tracked'] + ', "have": ' + this['have'] + ' }', this.Saved.bind(this));
+}
+
+LegoSet.prototype.Saved = function() {
+}
+
+function LegoSet(core) {
+  this['tracked'] = core['tracked'];
+  this['have'] = core['have'];
+  for (var i in columns)
+  {
+    this[columns[i]] = core[columns[i]];
+  }  
+}
+
+var showClass = " noshow";
+var sets = [];
+var columns = ["setid", "name", "price", "originalprice", "discount", "retiring", "new"];
+
+function GetRequest(url, data, callback) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+    {
+      var j = JSON.parse(this.responseText);
+      callback(j);
+    }
+  }
+  if (data)
+  {
+    xhttp.open("POST", url, true);
+    xhttp.send(data);
+  }
+  else
+  {
+    xhttp.open("GET", url, true);
+    xhttp.send();
+  }
+}
+
+function CreateTable(url, table) {
+  GetRequest(url, null, function(results) {  
+    var i = 0;
+    for (var e in results)
+    {
+      var n = new LegoSet(results[e]);
+      n.CreateRow();
+      sets.push(n);
+    }
+    
+    sortby('name');
+  });
+}
+
+function filterTable() {
+  var telem = document.getElementById('settable');
+  
+  for (var i in sets)
+  {
+    sets[i].Element.remove();
+  }
+  
+  var filteredSet = sets;
+  
+  var currentFilter = document.getElementById('havefilter');
+  if (currentFilter['checked'])
+    filteredSet = filteredSet.filter(f => f['have']);
+  currentFilter = document.getElementById('trackedfilter');
+  if (currentFilter['checked'])
+    filteredSet = filteredSet.filter(f => f['tracked']);
+  currentFilter = document.getElementById('setidfilter');
+  if (currentFilter['value'])
+    filteredSet = filteredSet.filter(f => f['setid'].toLowerCase().includes(currentFilter['value'].toLowerCase()));
+  currentFilter = document.getElementById('namefilter');
+  if (currentFilter['value'])
+    filteredSet = filteredSet.filter(f => f['name'].toLowerCase().includes(currentFilter['value'].toLowerCase()));
+  currentFilter = document.getElementById('pricefilter');
+  if (currentFilter['value'])
+    filteredSet = filteredSet.filter(f => f['price'] <= currentFilter['value']);
+  currentFilter = document.getElementById('originalfilter');
+  if (currentFilter['value'])
+    filteredSet = filteredSet.filter(f => f['originalprice'] <= currentFilter['value']);
+  currentFilter = document.getElementById('discountfilter');
+  if (currentFilter['value'])
+    filteredSet = filteredSet.filter(f => f['discount'] >= (currentFilter['value'] / 100));
+  currentFilter = document.getElementById('retiringfilter');
+  if (currentFilter['checked'])
+    filteredSet = filteredSet.filter(f => f['retiring']);
+  currentFilter = document.getElementById('newfilter');
+  if (currentFilter['checked'])
+    filteredSet = filteredSet.filter(f => f['new']);
+  
+  for (var i in filteredSet)
+  {
+    var n = filteredSet[i];
+    if (i % 2 == 0)
+      n.Element.className = "itemrow";
+    else
+      n.Element.className = "itemrow striped";
+    telem.appendChild(n.Element);
+  }
+}
+
+var sortAttribute = '';
+function sortby(attribute) {
+  if (sortAttribute != attribute)
+  {
+    sortAttribute = attribute;
+    sets.sort(function(a, b) {
+      if (a[attribute] < b[attribute])
+        return -1;
+      if (a[attribute] > b[attribute])
+        return 1;
+      return 0;
+    });
+  }
+  else
+  {
+    sortAttribute = '';
+    sets.sort(function(b, a) {
+      if (a[attribute] < b[attribute])
+        return -1;
+      if (a[attribute] > b[attribute])
+        return 1;
+      return 0;
+    });
+  }
+  filterTable();
+}
+
+function findset(source) {
+  GetRequest('lego.py?action=check&setid=' + source['value'], null, addToList);
+}
+
+function addToList(results) {
+  if (results.length > 0)
+  {
+    var r = results[0];
+    var found = sets.filter(f => f['setid'] == r['setid']);
+    if (found.length == 0)
+    {
+      var curSet = new LegoSet(r);
+      curSet.CreateRow();
+      sets.push(curSet);
+      filterTable();
+    }
+  }
+}
+
+function init() {
+  CreateTable("lego.py", "settable");
+}
+</script>
+</head>
+<body onload="init();">
+<table id="settable">
+  <tr class="titlerow">
+    <td colspan="2">Sets</td>
+    <td colspan="7">Find Set: <input type="text" onchange="findset(this);" /></td>
+  </tr>
+  <tr>
+    <td style="text-align: center;"><input type="checkbox" id="havefilter" onchange="filterTable();" /></td>
+    <td style="text-align: center;"><input type="checkbox" id="trackedfilter" onchange="filterTable();" /></td>
+    <td><input type="text" style="width: 50px;" id="setidfilter" onchange="filterTable();" /></td>
+    <td><input type="text" style="width: 100%" id="namefilter" onchange="filterTable();" /></td>
+    <td><input type="text" style="text-align: right; width: 85px;" id="pricefilter" onchange="filterTable();" /></td>
+    <td><input type="text" style="text-align: right; width: 85px;" id="originalfilter" onchange="filterTable();" /></td>
+    <td><input type="text" style="text-align: right; width: 55px;" id="discountfilter" onchange="filterTable();" /></td>
+    <td style="text-align: center;"><input type="checkbox" id="retiringfilter" onchange="filterTable();" /></td>
+    <td style="text-align: center;"><input type="checkbox" id="newfilter" onchange="filterTable();" /></td>
+  </tr>
+  <tr class="headerrow">
+    <td>Have</td>
+    <td>Track</td>
+    <td onclick="sortby('setid');">Set Id</td>
+    <td onclick="sortby('name');">Name</td>
+    <td onclick="sortby('price');">Current Price</td>
+    <td onclick="sortby('originalprice');">Original Price</td>
+    <td onclick="sortby('discount');">Discount</td>
+    <td onclick="sortby('retiring');">Retiring</td>
+    <td onclick="sortby('new');">New</td>
+  </tr>
+</table>
+</body>
+</html>
