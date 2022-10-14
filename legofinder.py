@@ -100,7 +100,10 @@ def sendNewSets(setList):
   session.quit()
   
 def getUncheckedSets(checkedList):
-  results = ls.getAll('SELECT SetId FROM LegoSet WHERE SetId NOT IN ({})'.format(','.join(['%s'] * len(checkedList))), tuple(checkedList))
+  end = ''
+  if len(checkedList) > 0:
+    end = 'WHERE SetId NOT IN ({})'.format(','.join(['%s'] * len(checkedList)))
+  results = ls.getAll('SELECT SetId FROM LegoSet {}'.format(end, tuple(checkedList))
   
   for current in results:
     runCheck('https://lego.com/en-us/product/{}'.format(current[0]), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]')
