@@ -5,6 +5,8 @@ import http.client
 import ssl
 import smtplib
 from email.mime.text import MIMEText
+
+from django.forms import URLInput
 from lxml import html
 from decimal import Decimal
 from legoset import LegoSet
@@ -56,7 +58,8 @@ def runCheck(site, xpath):
   count = 0
   sslcontext = ssl.create_default_context()
   try:
-    orig = urllib.request.urlopen(site, context=sslcontext)
+    request = urllib.request.Request(site, headers={'User-Agent': 'Mozilla/5.0'})
+    orig = urllib.request.urlopen(request, context=sslcontext)
     info = orig.read()
     parser = html.fromstring(info.decode('ascii', errors='ignore'))
     setList = parser.xpath(xpath)
