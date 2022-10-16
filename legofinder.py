@@ -95,6 +95,8 @@ def sendNewSets(setList):
   message['from'] = ls.settings['email']
   message['to'] = ls.settings['email']
   session = smtplib.SMTP(ls.settings['emailhost'], ls.settings['emailport'])
+  context = ssl.create_default_context()
+  session.starttls(context=context)
   session.login(ls.settings['email'], ls.settings['emailpassword'])
   session.sendmail(ls.settings['email'], ls.settings['email'], message.as_string())
   session.quit()
