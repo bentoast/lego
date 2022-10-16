@@ -67,8 +67,9 @@ def runCheck(site, xpath):
       elif setInfo != None:
         sameSets[setInfo.setid] = setInfo
       count = count + 1
-  except urllib.error.HTTPError:
+  except urllib.error.HTTPError as err:
     print(site)
+    print(err.code)
     print('url lib error')
     return count
   except http.client.IncompleteRead:
