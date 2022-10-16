@@ -54,7 +54,7 @@ def getSetInfo(element):
 
 def runCheck(site, xpath):
   count = 0
-  sslcontext = ssl.SSLContext()
+  sslcontext = ssl.create_default_context()
   try:
     orig = urllib.request.urlopen(site, context=sslcontext)
     info = orig.read()
