@@ -6,7 +6,6 @@ import ssl
 import smtplib
 from email.mime.text import MIMEText
 
-from django.forms import URLInput
 from lxml import html
 from decimal import Decimal
 from legoset import LegoSet
