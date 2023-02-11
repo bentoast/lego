@@ -5,25 +5,24 @@ import sys
 import json
 import cgi
 import cgitb
-import MySQLdb
 import legoSettings as ls
 import legofinder as lf
 from legoset import LegoSet
 
-cgitb.enable(1, '/home/pi/Lego', 5, 'text')
+cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
 
-def getSets(newsets, retiringsets, maxdiscount, mindiscount):
+def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
   statement = '''SELECT 
       ls.Name,
       ls.Price,
       ls.OriginalPrice,
       ls.Discount,
-      ls.Retiring,
-      ls.New,
+      CASE WHEN ls.Retiring THEN 1 ELSE 0 END,
+      CASE WHEN ls.New THEN 1 ELSE 0 END,
       ls.Modified,
       ls.SetId,
-      IFNULL(lt.Track, 0),
-      IFNULL(lt.Have, 0)
+      CASE WHEN lt.Track THEN 1 ELSE 0 END,
+      CASE WHEN lt.Have THEN 1 ELSE 0 END
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
     WHERE
@@ -40,6 +39,9 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount):
   if retiringsets != None:
     statement = '{} AND ls.Retiring = %s'.format(statement)
     params = params + (retiringsets,)
+
+  if count > 0:
+    statement = statement + ''' LIMIT {} OFFSET {}'''.format(count, (page - 1) * count)
     
   results = ls.getAll(statement, params)
   final = []
@@ -63,7 +65,13 @@ def RunGetRequest(formdata):
       mind = 0.01
     elif formdata['discount'].value == 'no':
       maxd = 0.01
-  allLines = getSets(nset, rset, maxd, mind)
+  page = 1
+  if 'page' in formdata:
+    page = int(formdata['page'].value)
+  count = -1
+  if 'count' in formdata:
+    count = int(formdata['count'].value)
+  allLines = getSets(nset, rset, maxd, mind, count, page)
   
   print('Content-type: application/javascript')
   print()

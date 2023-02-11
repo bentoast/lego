@@ -108,7 +108,10 @@ LegoSet.prototype.CreateRow = function() {
 LegoSet.prototype.ChangeTrack = function() {
   this['tracked'] = this.CheckElement['checked'];
   this['have'] = this.HaveElement['checked'];
-  GetRequest('lego.py', '{ "setid": ' + this['setid'] + ', "tracked":' + this['tracked'] + ', "have": ' + this['have'] + ' }', this.Saved.bind(this));
+  GetRequest('lego.py', '{ "setid": ' +
+    this['setid'] + ', "tracked":' +
+    this['tracked'] + ', "have": ' +
+    this['have'] + ' }', this.Saved.bind(this));
 }
 
 LegoSet.prototype.Saved = function() {
@@ -136,6 +139,7 @@ function GetRequest(url, data, callback) {
       callback(j);
     }
   }
+
   if (data)
   {
     xhttp.open("POST", url, true);
@@ -258,7 +262,7 @@ function addToList(results) {
 }
 
 function init() {
-  CreateTable("lego.py", "settable");
+  CreateTable("lego.py?count=25&page=1", "settable");
 }
 </script>
 </head>

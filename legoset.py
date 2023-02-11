@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import MySQLdb
-import json
 import legoSettings as ls
 
 class LegoSet:
@@ -14,6 +12,7 @@ class LegoSet:
     self.retiring = False
     self.new = False
     self.modified = None
+    self.cancheck = False
 
   def __repr__(self):
     desc = '{} - {}: {}'.format(self.setid, self.name, self.salePrice)
@@ -40,9 +39,11 @@ class LegoSet:
       self.new = jsondata['new']
     if 'retiring' in jsondata:
       self.retiring in jsondata['retiring']
+    if 'cancheck' in jsondata:
+      self.cancheck = jsondata['cancheck']
       
   def exportJson(self):
-    jsonString = '{{ "name": "{}", "price": {}, "originalprice": {}, "retiring": {}, "new": {}, "discount": {}, "modified": "{}", "setid": {} }}'.format(self.name, self.salePrice, self.originalPrice, self.retiring, self.new, self.discount, self.modified, self.setid)
+    jsonString = '{{ "name": "{}", "price": {}, "originalprice": {}, "retiring": {}, "new": {}, "discount": {}, "modified": "{}", "cancheck": {}, "setid": {} }}'.format(self.name, self.salePrice, self.originalPrice, self.retiring, self.new, self.discount, self.modified, self.cancheck, self.setid)
     return jsonString
 
   def isDifferent(self):
@@ -70,8 +71,8 @@ class LegoSet:
 
     if setcount[0] == 0:
       ls.insertrow('''
-        INSERT INTO LegoSet (Name, Price, OriginalPrice, Discount, Retiring, New, Modified, SetId)
-        VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s)''', (self.name, self.salePrice, self.originalPrice, self.discount, self.retiring, self.new, self.setid))
+        INSERT INTO LegoSet (Name, Price, OriginalPrice, Discount, Retiring, New, Modified, CanCheck, SetId)
+        VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s, %s)''', (self.name, self.salePrice, self.originalPrice, self.discount, self.retiring, self.new, self.cancheck, self.setid))
     else:
       ls.updaterow('''
       UPDATE LegoSet SET
@@ -81,6 +82,7 @@ class LegoSet:
         Discount = %s,
         Retiring = %s,
         New = %s,
-        Modified = NOW()
+        Modified = NOW(),
+        CanCheck = %s
       WHERE
-        SetId = %s''', (self.name, self.salePrice, self.originalPrice, self.discount, self.retiring, self.new, self.setid))
+        SetId = %s''', (self.name, self.salePrice, self.originalPrice, self.discount, self.retiring, self.new, self.cancheck, self.setid))

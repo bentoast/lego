@@ -3,31 +3,43 @@
 import os
 import json
 import cgitb
-import MySQLdb
+import psycopg2 as db
 
 cgitb.enable()
 
-settingsFile = os.path.expanduser('/home/pi/Lego/settings.ini')
+settingsFile = os.path.expanduser('/home/toast/Projects/lego/settings.ini')
 openFile = open(settingsFile)
 settings = json.load(openFile)
 openFile.close()
 
 def getAll(statement, params):
-    con = MySQLdb.connect(settings['host'], settings['user'], settings['password'], settings['db'])
+    con = db.connect(
+        host=settings['host'],
+        user=settings['user'],
+        password=settings['password'],
+        database=settings['db'])
     cur = con.cursor()
     
     cur.execute(statement, params)
     return cur.fetchall()
     
 def getOne(statement, params):
-    con = MySQLdb.connect(settings['host'], settings['user'], settings['password'], settings['db'])
+    con = db.connect(
+        host=settings['host'],
+        user=settings['user'],
+        password=settings['password'],
+        database=settings['db'])
     cur = con.cursor()
     
     cur.execute(statement, params)
     return cur.fetchone()
     
 def insertrow(statement, params):
-    con = MySQLdb.connect(settings['host'], settings['user'], settings['password'], settings['db'])
+    con = db.connect(
+        host=settings['host'],
+        user=settings['user'],
+        password=settings['password'],
+        database=settings['db'])
     cur = con.cursor()
     
     cur.execute(statement, params)
@@ -35,7 +47,11 @@ def insertrow(statement, params):
     return True
 
 def updaterow(statement, params):
-    con = MySQLdb.connect(settings['host'], settings['user'], settings['password'], settings['db'])
+    con = db.connect(
+        host=settings['host'],
+        user=settings['user'],
+        password=settings['password'],
+        database=settings['db'])
     cur = con.cursor()
     
     cur.execute(statement, params)
@@ -43,9 +59,16 @@ def updaterow(statement, params):
     return True
     
 def deleterow(statement, params):
-    con = MySQLdb.connect(settings['host'], settings['user'], settings['password'], settings['db'])
+    con = db.connect(
+        host=settings['host'],
+        user=settings['user'],
+        password=settings['password'],
+        database=settings['db'])
     cur = con.cursor()
     
     cur.execute(statement, params)
     con.commit()
     return True
+
+def disableCheck(setid):
+    return updaterow('UPDATE LegoSet SET CanCheck = \'f\' WHERE SetId = %s', (setid,))
