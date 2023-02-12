@@ -22,7 +22,8 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
       ls.Modified,
       ls.SetId,
       CASE WHEN lt.Track THEN 1 ELSE 0 END,
-      CASE WHEN lt.Have THEN 1 ELSE 0 END
+      CASE WHEN lt.Have THEN 1 ELSE 0 END'''
+  bottomClause = '''
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
     WHERE
@@ -33,15 +34,18 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
   params = (maxdiscount, mindiscount)
   
   if newsets != None:
-    statement = '{} AND ls.New = %s'.format(statement)
+    bottomClause = '{} AND ls.New = %s'.format(bottomClause)
     params = params + (newsets,)
     
   if retiringsets != None:
-    statement = '{} AND ls.Retiring = %s'.format(statement)
+    bottomClause = '{} AND ls.Retiring = %s'.format(bottomClause)
     params = params + (retiringsets,)
 
+  countStatement = 'SELECT COUNT(*) {}'.format(bottomClause)
+  countResult = ls.getOne(countStatement, params)
+
   if count > 0:
-    statement = statement + ''' LIMIT {} OFFSET {}'''.format(count, (page - 1) * count)
+    statement = '''{} {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, count, (page - 1) * count)
     
   results = ls.getAll(statement, params)
   final = []
@@ -49,7 +53,7 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
     f = '''{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": {}, "have": {} }}'''.format(current[0].replace('"', '\\"'), current[1], current[2], current[3], current[4], current[5], current[6], current[7], current[8], current[9])
     final.append(f)
     
-  return final
+  return (countResult, final)
   
 def RunGetRequest(formdata):
   nset = None
@@ -71,11 +75,11 @@ def RunGetRequest(formdata):
   count = -1
   if 'count' in formdata:
     count = int(formdata['count'].value)
-  allLines = getSets(nset, rset, maxd, mind, count, page)
+  (allCount, allLines) = getSets(nset, rset, maxd, mind, count, page)
   
   print('Content-type: application/javascript')
   print()
-  print('[{}]'.format(','.join(allLines)))
+  print('{{total: {}, page: {}, results: [{}]}}'.format(allCount, page, ','.join(allLines)))
   
 def RunSingleRequest(formdata):
   curSet = None
