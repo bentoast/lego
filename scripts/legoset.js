@@ -26,7 +26,7 @@ class LegoSet {
             this.Element.append(cell);
         }
 
-        for (let current in columns) {
+        for (let current of columns) {
             let cell = document.createElement('td');
             if (current == "name")
             {
