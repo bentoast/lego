@@ -42,3 +42,9 @@ body {
   .pricecell {
     text-align: right;
   }
+
+  .navigation-cell {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }

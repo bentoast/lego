@@ -36,8 +36,6 @@ function CreateTable(url, table) {
 }
 
 function filterTable() {
-  var telem = document.getElementById('settable');
-  
   for (var i in sets)
   {
     sets[i].Element.remove();
