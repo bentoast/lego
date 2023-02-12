@@ -81,7 +81,7 @@ function filterTable() {
       n.Element.className = "itemrow";
     else
       n.Element.className = "itemrow striped";
-    telem.tbody.insertBefore(n.Element, navrow);
+    navrow.parentElement.insertBefore(n.Element, navrow);
   }
 }
 
