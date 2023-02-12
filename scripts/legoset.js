@@ -42,7 +42,7 @@ class LegoSet {
                 if (current == 'retiring' || current == 'new')
                 {
                     cell['style'] = 'text-align: center;';
-                    if (current == '1')
+                    if (this[current] == '1')
                         string = 'Yes';
                     else
                         string = '';
