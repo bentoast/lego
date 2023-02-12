@@ -1,7 +1,5 @@
 class LegoSet {
     Element;
-    CheckElement;
-    HaveElement;
 
     columns = ["setid", "name", "price", "originalprice", "discount", "retiring", "new"];
 
@@ -15,7 +13,7 @@ class LegoSet {
     }
 
     CreateRow() {
-        let element = document.createElement('tr');
+        this.Element = document.createElement('tr');
 
         for (let current of ['have', 'tracked']) {
             let cell = document.createElement('td');
@@ -25,7 +23,7 @@ class LegoSet {
             check.dataset.checkType = current;
             check.addEventListener('change', this.ChangeTrack.bind(this));
             cell.appendChild(check);
-            element.append(cell);
+            this.Element.append(cell);
         }
 
         for (let current in columns) {
@@ -64,7 +62,7 @@ class LegoSet {
                 }
                 cell.appendChild(document.createTextNode(string));
             }
-            element.appendChild(cell);
+            this.Element.appendChild(cell);
         }
     }
 
