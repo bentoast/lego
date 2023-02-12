@@ -48,3 +48,18 @@ body {
     justify-content: space-between;
     width: 100%;
   }
+
+  .navigation-button {
+    cursor: pointer;
+    border-radius: 5px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: 8pt;
+  }
+
+  .navigation-button:hover {
+    background: gainsboro;
+    border: 1px solid #959595;
+  }

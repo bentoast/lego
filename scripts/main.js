@@ -1,3 +1,9 @@
+var finder = {
+    changePage: function(direction) {
+        console.log(direction);
+    }
+}
+
 var sets = [];
 
 function GetRequest(url, data, callback) {
@@ -32,6 +38,8 @@ function CreateTable(url, table) {
     }
     
     sortby('name');
+
+    console.log(results.total / 25)
   });
 }
 

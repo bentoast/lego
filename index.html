@@ -41,9 +41,11 @@ function init() {
     <td onclick="sortby('new');">New</td>
   </tr>
   <tr id="navigationrow">
-    <td colspan="9" class="navigation-cell">
-      <button id="backButton" onclick="">&lt;&lt;</button>
-      <button id="forwardButton" onclick="">&gt;&gt;</button>
+    <td colspan="9">
+      <div class="navigation-cell">
+        <div id="backButton" class="navigation-button" onclick="finder.changePage(-1);">&lt;&lt;</div>
+        <div id="forwardButton" class="navigation-button" onclick="finder.changePage(1);">&gt;&gt;</div>
+      </div>
     </td>
   </tr>
 </table>
