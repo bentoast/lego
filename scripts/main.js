@@ -23,8 +23,7 @@ function GetRequest(url, data, callback) {
 }
 
 function CreateTable(url, table) {
-  GetRequest(url, null, function(results) {  
-    var i = 0;
+  GetRequest(url, null, function(results) {
     for (var e in results.results)
     {
       var n = new LegoSet(results.results[e]);
@@ -74,6 +73,7 @@ function filterTable() {
   if (currentFilter['checked'])
     filteredSet = filteredSet.filter(f => f['new']);
   
+  let navrow = document.getElementById('navigationrow');
   for (var i in filteredSet)
   {
     var n = filteredSet[i];
@@ -81,7 +81,7 @@ function filterTable() {
       n.Element.className = "itemrow";
     else
       n.Element.className = "itemrow striped";
-    telem.appendChild(n.Element);
+    telem.insertBefore(n.Element, navrow);
   }
 }
 
