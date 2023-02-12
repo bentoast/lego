@@ -53,7 +53,7 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
     f = '''{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": {}, "have": {} }}'''.format(current[0].replace('"', '\\"'), current[1], current[2], current[3], current[4], current[5], current[6], current[7], current[8], current[9])
     final.append(f)
     
-  return (countResult, final)
+  return (countResult[0], final)
   
 def RunGetRequest(formdata):
   nset = None
