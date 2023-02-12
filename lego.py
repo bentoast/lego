@@ -79,7 +79,7 @@ def RunGetRequest(formdata):
   
   print('Content-type: application/javascript')
   print()
-  print('{{total: {}, page: {}, results: [{}]}}'.format(allCount, page, ','.join(allLines)))
+  print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
 def RunSingleRequest(formdata):
   curSet = None
