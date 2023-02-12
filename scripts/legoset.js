@@ -7,7 +7,7 @@ class LegoSet {
         this['tracked'] = core['tracked'];
         this['have'] = core['have'];
 
-        for (let current of columns) {
+        for (let current of this.columns) {
             this[current] = core[current];
         }
     }
@@ -26,7 +26,7 @@ class LegoSet {
             this.Element.append(cell);
         }
 
-        for (let current of columns) {
+        for (let current of this.columns) {
             let cell = document.createElement('td');
             if (current == "name")
             {
