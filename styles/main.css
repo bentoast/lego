@@ -1,0 +1,44 @@
+body {
+    font-family: sans-serif;
+  }
+  
+  table {
+    border: 1px solid black;
+    margin: auto;
+    padding: 5px;
+    border-radius: 10px;
+    border-spacing: 0px;
+  }
+  
+  td {
+    padding: 5px;
+  }
+  
+  input {
+    font-size: 8pt;
+  }
+  
+  .titlerow {
+    font-weight: bold;
+    font-size: 20pt;
+    background: #ebd42d;
+  }
+  
+  .headerrow {
+    background: #3474eb;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+  }
+  
+  .itemrow {
+    font-size: 8pt;
+  }
+  
+  .striped {
+    background: #dcdcdc;
+  }
+  
+  .pricecell {
+    text-align: right;
+  }
