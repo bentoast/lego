@@ -43,7 +43,7 @@ class LegoSet {
                 {
                     cell['style'] = 'text-align: center;';
                     if (this[current] == '1')
-                        string = 'Yes';
+                        string = '&#x2705;';
                     else
                         string = '';
                 }
