@@ -24,7 +24,7 @@ class LegoSet {
             check['checked'] = this[current];
             check.dataset.checkType = current;
             check.addEventListener('change', this.ChangeTrack.bind(this));
-            cell.appendChild(this.check);
+            cell.appendChild(check);
             element.append(cell);
         }
 
