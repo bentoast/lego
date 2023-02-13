@@ -1,10 +1,14 @@
 var finder = {
+    page: 1,
+    pageSize: 25,
+
     changePage: function(direction) {
         console.log(direction);
     },
 
     goToPage: function(event) {
-        console.log(event.target.dataset.pageNumber);
+        this.page = event.target.dataset.pageNumber;
+        CreateTable('lego.py?count=' + this.pageSize + '&page=' + this.page, 'settable');
     },
 }
 
