@@ -38,6 +38,7 @@ function GetRequest(url, data, callback) {
 
 function CreateTable(url, table) {
   GetRequest(url, null, function(results) {
+    sets = [];
     for (var e in results.results)
     {
       var n = new LegoSet(results.results[e]);
@@ -46,6 +47,13 @@ function CreateTable(url, table) {
     }
     
     sortby('name');
+
+    let navElement = document.getElementById('navigation-cell');
+    for (let currentNav in navElement.childNodes) {
+        if (navElement.childNodes[currentNav].dataset.pageNumber) {
+            navElement.childNodes[currentNav].remove();
+        }
+    }
 
     let lastButton = document.getElementById('forwardButton');
     let totalPages = Math.ceil(results.total / 25);
