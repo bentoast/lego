@@ -48,7 +48,7 @@ function CreateTable(url, table) {
     
     sortby('name');
 
-    let navElement = document.getElementById('navigation-cell');
+    let navElement = document.getElementById('backButton').parentElement;
     for (let currentNav in navElement.childNodes) {
         if (navElement.childNodes[currentNav].dataset.pageNumber) {
             navElement.childNodes[currentNav].remove();
