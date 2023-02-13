@@ -1,7 +1,11 @@
 var finder = {
     changePage: function(direction) {
         console.log(direction);
-    }
+    },
+
+    goToPage: function(event) {
+        console.log(event.target.dataset.pageNumber);
+    },
 }
 
 var sets = [];
@@ -39,7 +43,15 @@ function CreateTable(url, table) {
     
     sortby('name');
 
-    console.log(results.total / 25)
+    let lastButton = document.getElementById('forwardButton');
+    let totalPages = Math.ceil(results.total / 25);
+    for (let i = 0; i < totalPages; i++) {
+        let pageButton = document.createElement('div');
+        pageButton.classList.add('navigation-button');
+        pageButton.addEventListener('click', finder.goToPage.bind(finder));
+        pageButton.appendChild(document.createTextNode(i + 1));
+        lastButton.parentElement.insertBefore(pageButton, lastButton);
+    }
   });
 }
 
