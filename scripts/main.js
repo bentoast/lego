@@ -48,6 +48,7 @@ function CreateTable(url, table) {
     for (let i = 0; i < totalPages; i++) {
         let pageButton = document.createElement('div');
         pageButton.classList.add('navigation-button');
+        pageButton.dataset.pageNumber = i + 1;
         pageButton.addEventListener('click', finder.goToPage.bind(finder));
         pageButton.appendChild(document.createTextNode(i + 1));
         lastButton.parentElement.insertBefore(pageButton, lastButton);
