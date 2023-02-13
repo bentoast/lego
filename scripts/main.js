@@ -50,7 +50,7 @@ function CreateTable(url, table) {
 
     let navElement = document.getElementById('backButton').parentElement;
     for (let currentNav in navElement.childNodes) {
-        if (navElement.childNodes[currentNav].dataset.pageNumber) {
+        if (navElement.childNodes[currentNav].dataset && navElement.childNodes[currentNav].dataset.pageNumber) {
             navElement.childNodes[currentNav].remove();
         }
     }
