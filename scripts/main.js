@@ -49,10 +49,14 @@ function CreateTable(url, table) {
     sortby('name');
 
     let navElement = document.getElementById('backButton').parentElement;
+    let collected = [];
     for (let currentNav in navElement.childNodes) {
         if (navElement.childNodes[currentNav].dataset && navElement.childNodes[currentNav].dataset.pageNumber) {
-            navElement.childNodes[currentNav].remove();
+            collected.push(navElement.childNodes[currentNav]);
         }
+    }
+    for (let currentElem of collected) {
+        currentElem.remove();
     }
 
     let lastButton = document.getElementById('forwardButton');
