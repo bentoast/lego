@@ -14,6 +14,7 @@ class LegoSet {
 
     CreateRow() {
         this.Element = document.createElement('tr');
+        this.Element.dataset.hasData = "yes";
 
         for (let current of ['have', 'tracked']) {
             let cell = document.createElement('td');

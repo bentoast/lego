@@ -10,6 +10,13 @@ var finder = {
         this.page = event.target.dataset.pageNumber;
         CreateTable('lego.py?count=' + this.pageSize + '&page=' + this.page, 'settable');
     },
+
+    clearTable: function() {
+      let datarows = document.querySelectorAll("[data-has-data='yes']");
+      for (let current of datarows) {
+        current.remove();
+      }
+    }
 }
 
 var sets = [];
@@ -37,6 +44,7 @@ function GetRequest(url, data, callback) {
 }
 
 function CreateTable(url, table) {
+  finder.clearTable();
   GetRequest(url, null, function(results) {
     sets = [];
     for (var e in results.results)
