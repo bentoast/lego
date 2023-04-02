@@ -18,9 +18,13 @@ def getSetInfo(element):
   currentSet = LegoSet()
     
   code = element.xpath('//span[@itemprop="productID"]/text()')
+  print(code)
+  #This will also contain product codes
   hrefString = element.xpath('.//a[@data-test="product-leaf-title-link"]/@href')
   if hrefString != None and len(hrefString) > 0:
-    code.append(hrefString[0].split('-')[-1])
+    #The URL will look like en-us/product/blah-blah-12345 or en-us/product/12345
+    #So we need the last part of the URL, and the last part of that
+    code.append(hrefString[0].split('/')[-1].split('-')[-1])
   for currentCode in code:
     currentSet.setid = int(currentCode) 
     
