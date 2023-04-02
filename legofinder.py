@@ -18,7 +18,6 @@ def getSetInfo(element):
   currentSet = LegoSet()
     
   code = element.xpath('//span[@itemprop="productID"]/text()')
-  print(code)
   #This will also contain product codes
   hrefString = element.xpath('.//a[@data-test="product-leaf-title-link"]/@href')
   if hrefString != None and len(hrefString) > 0:
