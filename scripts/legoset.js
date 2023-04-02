@@ -56,7 +56,7 @@ class LegoSet {
                     else
                         string = '';
                 }
-                else if (current == 'price' || current == 'original')
+                else if (current == 'price' || current == 'originalprice')
                 {
                     cell.classList.add('pricecell');
                     string = '$' + this[current];

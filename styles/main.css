@@ -63,3 +63,11 @@ body {
     background: gainsboro;
     border: 1px solid #959595;
   }
+
+  .right-justify {
+    text-align: right;
+  }
+
+  .center-justify {
+    text-align: center;
+  }
