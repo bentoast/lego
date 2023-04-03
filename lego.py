@@ -17,12 +17,12 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
       ls.Price,
       ls.OriginalPrice,
       ls.Discount,
-      ls.Retiring,
-      ls.New,
+      COALESCE(ls.Retiring, FALSE),
+      COALESCE(ls.New, FALES),
       ls.Modified,
       ls.SetId,
-      lt.Track,
-      lt.Have'''
+      COALESCE(lt.Track, FALSE),
+      COALESCE(lt.Have, FALSE)'''
   bottomClause = '''
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
