@@ -140,6 +140,6 @@ if __name__ == '__main__':
       formdata = cgi.FieldStorage()
       requestData = json.loads(FormatFormData(formdata))
     elif os.environ['REQUEST_METHOD'] == 'POST':
-      requestData = ' '.join(sys.stdin.readlines())
+      requestData = json.load(sys.stdin)
 
     ProcessRequest(requestData)
