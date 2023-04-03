@@ -135,10 +135,10 @@ if __name__ == '__main__':
   #Discover request being made
   if 'REQUEST_METHOD' in os.environ:
     #Default action, nothing
-    requestData = json.load('{ action: "invalid", parameters: [] }')
+    requestData = json.loads('{ action: "invalid", parameters: [] }')
     if os.environ['REQUEST_METHOD'] == 'GET':
       formdata = cgi.FieldStorage()
-      requestData = json.load(FormatFormData(formdata))
+      requestData = json.loads(FormatFormData(formdata))
     elif os.environ['REQUEST_METHOD'] == 'POST':
       requestData = (sys.stdin)
 
