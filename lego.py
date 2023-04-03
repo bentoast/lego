@@ -113,8 +113,8 @@ def UpdateRequest(jsondata):
   print('["success"]')
 
 def FormatFormData(formdata):
-  parameters = ', '.join([f'{key}: "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
-  return f'{{ action: "{formdata["action"].value}", parameters: {{ {parameters} }} }}'
+  parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
+  return f'{{ action: "{formdata["action"].value}", "parameters": {{ {parameters} }} }}'
 
 def ProcessRequest(requestData):
   #This is common to all requests
@@ -135,7 +135,7 @@ if __name__ == '__main__':
   #Discover request being made
   if 'REQUEST_METHOD' in os.environ:
     #Default action, nothing
-    requestData = json.loads('{ action: "invalid", parameters: [] }')
+    requestData = json.loads('{ "action": "invalid", "parameters": { } }')
     if os.environ['REQUEST_METHOD'] == 'GET':
       formdata = cgi.FieldStorage()
       requestData = json.loads(FormatFormData(formdata))
