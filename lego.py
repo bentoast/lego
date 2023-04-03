@@ -17,12 +17,12 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
       ls.Price,
       ls.OriginalPrice,
       ls.Discount,
-      CASE WHEN ls.Retiring THEN 1 ELSE 0 END,
-      CASE WHEN ls.New THEN 1 ELSE 0 END,
+      ls.Retiring,
+      ls.New,
       ls.Modified,
       ls.SetId,
-      CASE WHEN lt.Track THEN 1 ELSE 0 END,
-      CASE WHEN lt.Have THEN 1 ELSE 0 END'''
+      lt.Track,
+      lt.Have'''
   bottomClause = '''
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
@@ -91,13 +91,7 @@ def SingleRequest(request):
     
   if curSet != None:
     curSet.save()
-    r = 0
-    if curSet.retiring:
-      r = 1
-    n = 0
-    if curSet.new:
-      n = 1
-    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": 0, "have": 0 }}]'''.format(curSet.name.replace('"', '\\"'), curSet.salePrice, curSet.originalPrice, curSet.discount, r, n, curSet.modified, curSet.setid))
+    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": 0, "have": 0 }}]'''.format(curSet.name.replace('"', '\\"'), curSet.salePrice, curSet.originalPrice, curSet.discount, curSet.retiring, curSet.new, curSet.modified, curSet.setid))
   else:
     print('[{{"status": "failure", "setcount": {} }}]'.format(setcount))
   
