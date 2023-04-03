@@ -114,7 +114,7 @@ def UpdateRequest(jsondata):
 
 def FormatFormData(formdata):
   parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
-  return f'{{ action: "{formdata["action"].value}", "parameters": {{ {parameters} }} }}'
+  return f'{{ "action": "{formdata["action"].value}", "parameters": {{ {parameters} }} }}'
 
 def ProcessRequest(requestData):
   #This is common to all requests
