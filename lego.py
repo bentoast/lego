@@ -55,35 +55,33 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
     
   return (countResult[0], final)
   
-def RunGetRequest(formdata):
+def MultipleRequest(request):
   nset = None
-  if 'new' in formdata:
-    nset = formdata['new'].value == 'yes'
+  if 'new' in request:
+    nset = request['new'] == 'yes'
   rset = None
-  if 'retiring' in formdata:
-    rset = formdata['retiring'].value == 'yes'
+  if 'retiring' in request:
+    rset = request['retiring'] == 'yes'
   mind = 0.00
   maxd = 1.00
-  if 'discount' in formdata:
-    if formdata['discount'].value == 'yes':
+  if 'discount' in request:
+    if request['discount'] == 'yes':
       mind = 0.01
-    elif formdata['discount'].value == 'no':
+    elif request['discount'] == 'no':
       maxd = 0.01
   page = 1
-  if 'page' in formdata:
-    page = int(formdata['page'].value)
+  if 'page' in request:
+    page = int(request['page'])
   count = -1
-  if 'count' in formdata:
-    count = int(formdata['count'].value)
+  if 'count' in request:
+    count = int(request['count'])
   (allCount, allLines) = getSets(nset, rset, maxd, mind, count, page)
   
-  print('Content-type: application/javascript')
-  print()
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
-def RunSingleRequest(formdata):
+def SingleRequest(request):
   curSet = None
-  setcount = lf.runCheck('https://lego.com/en-us/product/{}'.format(formdata['setid'].value), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]')
+  setcount = lf.runCheck('https://lego.com/en-us/product/{}'.format(request['setid']), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]')
   
   if len(lf.sameSets) > 0:
     curSet = list(lf.sameSets.values())[0]
@@ -91,8 +89,6 @@ def RunSingleRequest(formdata):
     setcount = 8
     curSet = list(lf.changedSets.values())[0]
     
-  print('Content-type: application/javascript')
-  print()
   if curSet != None:
     curSet.save()
     r = 0
@@ -105,7 +101,7 @@ def RunSingleRequest(formdata):
   else:
     print('[{{"status": "failure", "setcount": {} }}]'.format(setcount))
   
-def RunPostRequest(jsondata):
+def UpdateRequest(jsondata):
   countResult = ls.getOne('SELECT COUNT(*) FROM LegoTrack WHERE SetId = %s AND UserId = %s', (jsondata['setid'], 1))
   
   statement = 'UPDATE LegoTrack SET Track = %s, Have = %s WHERE SetId = %s AND UserId = %s;'
@@ -114,17 +110,36 @@ def RunPostRequest(jsondata):
     
   ls.updaterow(statement, (jsondata['tracked'], jsondata['have'], jsondata['setid'], 1))
   
-  print('Content-type: application/javascript')
-  print()
   print('["success"]')
 
-if __name__ == '__main__':  
+def FormatFormData(formdata):
+  parameters = ', '.join([f'{key}: "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
+  return f'{{ action: "{formdata["action"].value}", parameters: {{ {parameters} }} }}'
+
+def ProcessRequest(requestData):
+  #This is common to all requests
+  print('Content-type: application/javascript')
+  print()
+
+  #Here are all of our commands so far.
+  #Eventually, this will probably need to be different
+  if requestData['action'] == 'single':
+    SingleRequest(requestData['parameters'])
+  elif requestData['action'] == 'multiple':
+    MultipleRequest(requestData['parameters'])
+  elif requestData['action'] == 'update':
+    UpdateRequest(requestData['parameters'])
+  return None
+
+if __name__ == '__main__':
+  #Discover request being made
   if 'REQUEST_METHOD' in os.environ:
+    #Default action, nothing
+    requestData = json.load('{ action: "invalid", parameters: [] }')
     if os.environ['REQUEST_METHOD'] == 'GET':
       formdata = cgi.FieldStorage()
-      if 'action' in formdata and formdata['action'].value == 'check':
-        RunSingleRequest(formdata)
-      else:
-        RunGetRequest(formdata)
+      requestData = json.load(FormatFormData(formdata))
     elif os.environ['REQUEST_METHOD'] == 'POST':
-      RunPostRequest(json.load(sys.stdin))
+      requestData = (sys.stdin)
+
+    ProcessRequest(requestData)

@@ -8,7 +8,7 @@ var finder = {
 
     goToPage: function(event) {
         this.page = event.target.dataset.pageNumber;
-        CreateTable('lego.py?count=' + this.pageSize + '&page=' + this.page, 'settable');
+        CreateTable('lego.py?action=multiple&count=' + this.pageSize + '&page=' + this.page, 'settable');
     },
 
     clearTable: function() {
@@ -156,7 +156,7 @@ function sortby(attribute) {
 }
 
 function findset(source) {
-  GetRequest('lego.py?action=check&setid=' + source['value'], null, addToList);
+  GetRequest('lego.py?action=single&setid=' + source['value'], null, addToList);
 }
 
 function addToList(results) {
