@@ -18,7 +18,7 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
       ls.OriginalPrice,
       ls.Discount,
       COALESCE(ls.Retiring, FALSE),
-      COALESCE(ls.New, FALES),
+      COALESCE(ls.New, FALSE),
       ls.Modified,
       ls.SetId,
       COALESCE(lt.Track, FALSE),
