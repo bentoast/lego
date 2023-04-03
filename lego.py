@@ -50,7 +50,7 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
   results = ls.getAll(statement, params)
   final = []
   for current in results:	
-    f = '''{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": {}, "have": {} }}'''.format(current[0].replace('"', '\\"'), current[1], current[2], current[3], current[4], current[5], current[6], current[7], current[8], current[9])
+    f = '''{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": {}, "have": {} }}'''.format(current[0].replace('"', '\\"'), current[1], current[2], current[3], str(current[4]).lower(), str(current[5]).lower(), current[6], current[7], str(current[8]).lower(), str(current[9]).lower())
     final.append(f)
     
   return (countResult[0], final)
@@ -91,7 +91,7 @@ def SingleRequest(request):
     
   if curSet != None:
     curSet.save()
-    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": 0, "have": 0 }}]'''.format(curSet.name.replace('"', '\\"'), curSet.salePrice, curSet.originalPrice, curSet.discount, curSet.retiring, curSet.new, curSet.modified, curSet.setid))
+    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": false, "have": false }}]'''.format(curSet.name.replace('"', '\\"'), curSet.salePrice, curSet.originalPrice, curSet.discount, str(curSet.retiring).lower(), str(curSet.new).lower(), curSet.modified, curSet.setid))
   else:
     print('[{{"status": "failure", "setcount": {} }}]'.format(setcount))
   
