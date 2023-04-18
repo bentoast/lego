@@ -1,3 +1,6 @@
+import { LegoSet } from "./legoset";
+import { LegoService } from "./legoservice";
+
 var finder = {
     page: 1,
     pageSize: 25,
@@ -8,7 +11,8 @@ var finder = {
 
     goToPage: function(event) {
         this.page = event.target.dataset.pageNumber;
-        CreateTable('lego.py?action=multiple&count=' + this.pageSize + '&page=' + this.page, 'settable');
+        let params = { 'count': this.pageSize, 'page': this.page };
+        CreateTable(params, 'settable');
     },
 
     clearTable: function() {
@@ -21,31 +25,9 @@ var finder = {
 
 var sets = [];
 
-function GetRequest(url, data, callback) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200)
-    {
-      var j = JSON.parse(this.responseText);
-      callback(j);
-    }
-  }
-
-  if (data)
-  {
-    xhttp.open("POST", url, true);
-    xhttp.send(data);
-  }
-  else
-  {
-    xhttp.open("GET", url, true);
-    xhttp.send();
-  }
-}
-
-function CreateTable(url, table) {
+function CreateTable(params, table) {
   finder.clearTable();
-  GetRequest(url, null, function(results) {
+  LegoService.getMultiple(params, function(results) {
     sets = [];
     for (var e in results.results)
     {
@@ -156,7 +138,7 @@ function sortby(attribute) {
 }
 
 function findset(source) {
-  GetRequest('lego.py?action=single&setid=' + source['value'], null, addToList);
+  LegoService.getSingle(source['value'], addToList);
 }
 
 function addToList(results) {

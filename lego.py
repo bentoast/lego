@@ -26,20 +26,23 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
   bottomClause = '''
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
-    WHERE
-      Price IS NOT NULL
-      AND OriginalPrice IS NOT NULL
-      AND Discount < %s
-      AND Discount >= %s'''
-  params = (maxdiscount, mindiscount)
+    WHERE '''
+  clauses = [
+    'ls.Price IS NOT NULL',
+    'ls.OriginalPrice IS NOT NULL',
+    'ls.Discount < %(mindiscount)s',
+    'ls.Discount >= %(maxdiscount)s']
+  params = { 'maxdiscount': maxdiscount, 'mindiscount':mindiscount }
   
   if newsets != None:
-    bottomClause = '{} AND ls.New = %s'.format(bottomClause)
-    params = params + (newsets,)
+    clauses.append('ls.New = %(new)s')
+    params['new'] = newsets
     
   if retiringsets != None:
-    bottomClause = '{} AND ls.Retiring = %s'.format(bottomClause)
-    params = params + (retiringsets,)
+    clauses.append('ls.Retiring = %(retiring)s')
+    params['retiring'] = retiringsets
+
+  bottomClause = bottomClause + ' AND '.join(clauses)
 
   countStatement = 'SELECT COUNT(*) {}'.format(bottomClause)
   countResult = ls.getOne(countStatement, params)
@@ -104,26 +107,32 @@ def UpdateRequest(jsondata):
     
   ls.updaterow(statement, (jsondata['tracked'], jsondata['have'], jsondata['setid'], 1))
   
-  print('["success"]')
+  print('{{"status":"success"}}')
 
 def FormatFormData(formdata):
-  parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
-  return f'{{ "action": "{formdata["action"].value}", "parameters": {{ {parameters} }} }}'
+  parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action' and key != 'order'])
+  order = 'name'
+  if 'order' in formdata:
+    order = formdata['order'].value
+  return f'{{ "action": "{formdata["action"].value}", "order": "{order}", "parameters": {{ {parameters} }} }}'
 
 def ProcessRequest(requestData):
+  routes = {
+    'single': SingleRequest,
+    'multiple': MultipleRequest,
+    'update': UpdateRequest
+  }
+
   #This is common to all requests
   print('Content-type: application/javascript')
   print()
 
   #Here are all of our commands so far.
   #Eventually, this will probably need to be different
-  if requestData['action'] == 'single':
-    SingleRequest(requestData['parameters'])
-  elif requestData['action'] == 'multiple':
-    MultipleRequest(requestData['parameters'])
-  elif requestData['action'] == 'update':
-    UpdateRequest(requestData['parameters'])
-  return None
+  if requestData['action'] in routes:
+    routes[requestData['action']](requestData['parameters'])
+  else:
+    print('{{"status:"invalid"}}')
 
 if __name__ == '__main__':
   #Discover request being made

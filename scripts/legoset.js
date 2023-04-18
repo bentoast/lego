@@ -1,3 +1,5 @@
+import { LegoService } from "./legoservice";
+
 class LegoSet {
     Element;
 
@@ -69,13 +71,15 @@ class LegoSet {
 
     ChangeTrack(event) {
         this[event.target.dataset.checkType] = event.target.checked;
-        GetRequest('lego.py', '{ "action": "update", "parameters": { "setid": ' +
-            this['setid'] + ', "tracked": ' +
-            this['tracked'] + ', "have": ' +
-            this['have'] + '} }', this.Saved.bind(this));
+        LegoService.updateSet(
+            this['setid'],
+            this['have'],
+            this['tracked'], this.Saved.bind(this));
     }
 
     Saved() {
         
     }
 }
+
+export { LegoSet };
