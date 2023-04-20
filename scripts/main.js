@@ -163,7 +163,7 @@ function addToList(results) {
 }
 
 function init() {
-  CreateTable('lego.py?action=multiple&count=' + finder.pageSize + '&page=' + finder.page);
+  CreateTable({"count": finder.pageSize, "page": finder.page });
 }
 
 document.body.addEventListener('load', init());
