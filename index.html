@@ -4,7 +4,9 @@
 
 <title>Lego Tracker</title>
 <link rel="stylesheet" href="styles/main.css" />
-<script type="module" src="scripts/main.js"></script>
+<script type="module">
+  import { CreateTable, finder } from './scripts/main.js';
+</script>
 <script>
 function init() {
   CreateTable('lego.py?action=multiple&count=' + finder.pageSize + '&page=' + finder.page, 'settable');
