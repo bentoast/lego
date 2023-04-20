@@ -1,5 +1,5 @@
-import { LegoSet } from "./legoset";
-import { LegoService } from "./legoservice";
+import { LegoSet } from "./legoset.js";
+import { LegoService } from "./legoservice.js";
 
 var finder = {
     page: 1,

@@ -1,4 +1,4 @@
-import { LegoService } from "./legoservice";
+import { LegoService } from "./legoservice.js";
 
 class LegoSet {
     Element;
