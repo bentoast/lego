@@ -49,6 +49,8 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
 
   if count > 0:
     statement = '''{} {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, count, (page - 1) * count)
+  else:
+    statement = '''{} {}'''.format(statement, bottomClause)
     
   results = ls.getAll(statement, params)
   final = []
