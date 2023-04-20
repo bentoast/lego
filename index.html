@@ -6,11 +6,10 @@
 <link rel="stylesheet" href="styles/main.css" />
 <script type="module">
   import { CreateTable, finder } from './scripts/main.js';
-</script>
-<script>
-function init() {
-  CreateTable('lego.py?action=multiple&count=' + finder.pageSize + '&page=' + finder.page);
-}
+
+  function init() {
+    CreateTable('lego.py?action=multiple&count=' + finder.pageSize + '&page=' + finder.page);
+  }
 </script>
 </head>
 <body onload="init();">
