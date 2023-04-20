@@ -7,6 +7,7 @@
 <script type="module">
   import { CreateTable, finder } from './scripts/main.js';
 
+  documnet.body.addEventListener('load', init);
   function init() {
     CreateTable('lego.py?action=multiple&count=' + finder.pageSize + '&page=' + finder.page);
   }
