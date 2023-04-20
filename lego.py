@@ -128,7 +128,6 @@ def ProcessRequest(requestData):
   #This is common to all requests
   print('Content-type: application/javascript')
   print()
-  print(requestData)
 
   #Here are all of our commands so far.
   #Eventually, this will probably need to be different
