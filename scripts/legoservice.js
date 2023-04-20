@@ -18,4 +18,21 @@ class LegoService {
     }
   }
 
-  export { LegoService };
+  class LegoFilter {
+    have;
+    track;
+    setid;
+    name;
+    price;
+    originalprice;
+    discount;
+    retiring;
+    new;
+
+    page;
+    count;
+
+    order;
+  }
+
+  export { LegoService, LegoFilter };

@@ -12,7 +12,7 @@ var finder = {
     goToPage: function(event) {
         this.page = event.target.dataset.pageNumber;
         let params = { 'count': this.pageSize, 'page': this.page };
-        CreateTable(params, 'settable');
+        CreateTable(params);
     },
 
     clearTable: function() {
@@ -20,13 +20,17 @@ var finder = {
       for (let current of datarows) {
         current.remove();
       }
-    }
+    },
+
+    changeFilter: function(event) {
+    },
 }
 
 var sets = [];
 
-function CreateTable(params, table) {
+function CreateTable(params) {
   finder.clearTable();
+  //The call back could be taken out of the function and made a separate function
   LegoService.getMultiple(params, function(results) {
     sets = [];
     for (var e in results.results)
@@ -70,6 +74,7 @@ function filterTable() {
   
   var filteredSet = sets;
   
+  //All these need to be collected and sent by "GetMultiple"
   var currentFilter = document.getElementById('havefilter');
   if (currentFilter['checked'])
     filteredSet = filteredSet.filter(f => f['have']);
@@ -111,6 +116,7 @@ function filterTable() {
 }
 
 var sortAttribute = '';
+//This also needs to be part of the "GetMultiple" saga
 function sortby(attribute) {
   if (sortAttribute != attribute)
   {
