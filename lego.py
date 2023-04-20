@@ -116,6 +116,7 @@ def FormatFormData(formdata):
   order = 'name'
   if 'order' in formdata:
     order = formdata['order'].value
+  print(parameters)
   return f'{{ "action": "{formdata["action"].value}", "order": "{order}", "parameters": {{ {parameters} }} }}'
 
 def ProcessRequest(requestData):
