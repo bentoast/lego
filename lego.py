@@ -116,7 +116,6 @@ def FormatFormData(formdata):
   order = 'name'
   if 'order' in formdata:
     order = formdata['order'].value
-  print(parameters)
   return f'{{ "action": "{formdata["action"].value}", "order": "{order}", "parameters": {{ {parameters} }} }}'
 
 def ProcessRequest(requestData):
@@ -129,6 +128,7 @@ def ProcessRequest(requestData):
   #This is common to all requests
   print('Content-type: application/javascript')
   print()
+  print(requestData)
 
   #Here are all of our commands so far.
   #Eventually, this will probably need to be different
