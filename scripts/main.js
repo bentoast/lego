@@ -161,3 +161,5 @@ function addToList(results) {
     }
   }
 }
+
+export { finder, CreateTable, filterTable, sortby, findset, addToList }
