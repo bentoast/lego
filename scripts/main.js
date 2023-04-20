@@ -168,4 +168,8 @@ function init() {
 
 document.body.addEventListener('load', init());
 
+document.querySelectorAll('[data-filter-action').forEach(e => {
+  e.addEventListener(e.dataset.filterAction, finder.changeFilter.bind(finder));
+});
+
 export { finder, CreateTable, filterTable, sortby, findset, addToList }

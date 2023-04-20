@@ -18,14 +18,14 @@
         type="checkbox"
         id="havefilter"
         data-filter-name="have"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="trackedfilter"
         data-filter-name="track"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td>
       <input
@@ -33,7 +33,7 @@
         style="width: 50px;"
         id="setidfilter"
         data-filter-name="setid"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td>
       <input
@@ -41,7 +41,7 @@
         style="width: 100%"
         id="namefilter"
         data-filter-name="name"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td>
       <input
@@ -49,7 +49,7 @@
         style="text-align: right; width: 85px;"
         id="pricefilter"
         data-filter-name="price"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td>
       <input
@@ -57,7 +57,7 @@
         style="text-align: right; width: 85px;"
         id="originalfilter"
         data-filter-name="originalprice"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td>
       <input
@@ -65,33 +65,33 @@
         style="text-align: right; width: 55px;"
         id="discountfilter"
         data-filter-name="discount"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="retiringfilter"
         data-filter-name="retiring"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="newfilter"
         data-filter-name="new"
-        onchange="finder.changeFilter(event);" />
+        data-filter-action="change" />
     </td>
   </tr>
   <tr class="headerrow">
     <td>Have</td>
     <td>Track</td>
-    <td data-filter-name="order" data-filter-value="setid" onclick="finder.changeFilter(event);">Set Id</td>
-    <td data-filter-name="order" data-filter-value="name" onclick="finder.changeFilter(event);">Name</td>
-    <td data-filter-name="order" data-filter-value="price" onclick="finder.changeFilter(event);" class="right-justify">Current Price</td>
-    <td data-filter-name="order" data-filter-value="originalprice" onclick="finder.changeFilter(event);" class="right-justify">Original Price</td>
-    <td data-filter-name="order" data-filter-value="discount" onclick="finder.changeFilter(event);" class="right-justify">Discount</td>
-    <td data-filter-name="order" data-filter-value="retiring" onclick="finder.changeFilter(event);" class="center-justify">Retiring</td>
-    <td data-filter-name="order" data-filter-value="new" onclick="finder.changeFilter(event);" class="center-justify">New</td>
+    <td data-filter-name="order" data-filter-value="setid" data-filter-action="click">Set Id</td>
+    <td data-filter-name="order" data-filter-value="name" data-filter-action="click">Name</td>
+    <td data-filter-name="order" data-filter-value="price" data-filter-action="click" class="right-justify">Current Price</td>
+    <td data-filter-name="order" data-filter-value="originalprice" data-filter-action="click" class="right-justify">Original Price</td>
+    <td data-filter-name="order" data-filter-value="discount" data-filter-action="click" class="right-justify">Discount</td>
+    <td data-filter-name="order" data-filter-value="retiring" data-filter-action="click" class="center-justify">Retiring</td>
+    <td data-filter-name="order" data-filter-value="new" data-filter-action="click" class="center-justify">New</td>
   </tr>
   <tr id="navigationrow">
     <td colspan="9">
@@ -101,13 +101,13 @@
           class="navigation-button"
           data-filter-name="page"
           data-filter-amount="-1"
-          onclick="finder.changeFilter(event);">&lt;&lt;</div>
+          data-filter-action="click">&lt;&lt;</div>
         <div
           id="forwardButton"
           class="navigation-button"
           data-filter-name="page"
           data-filter-amount="1"
-          onclick="finder.changeFilter(1);">&gt;&gt;</div>
+          data-filter-action="click">&gt;&gt;</div>
       </div>
     </td>
   </tr>
