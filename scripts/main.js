@@ -11,7 +11,7 @@ var finder = {
 
     goToPage: function(event) {
         this.filter.page = event.target.dataset.pageNumber;
-        CreateTable(this.filter);
+        this.CreateTable(this.filter);
     },
 
     clearTable: function() {
@@ -29,7 +29,7 @@ var finder = {
     },
 
     findset: function(source) {
-      LegoService.getSingle(source['value'], this.addToList);
+      LegoService.getSingle(source['value'], this.addToList.bind(this));
     },
 
     init: function() {
@@ -40,12 +40,12 @@ var finder = {
       this.clearTable();
       //The call back could be taken out of the function and made a separate function
       LegoService.getMultiple(params, function(results) {
-        this.sets = [];
+        filter.sets = [];
         for (var e in results.results)
         {
           var n = new LegoSet(results.results[e]);
           n.CreateRow();
-          this.sets.push(n);
+          filter.sets.push(n);
         }
 
         let navElement = document.getElementById('backButton').parentElement;
@@ -65,7 +65,7 @@ var finder = {
             let pageButton = document.createElement('div');
             pageButton.classList.add('navigation-button');
             pageButton.dataset.pageNumber = i + 1;
-            pageButton.addEventListener('click', this.goToPage.bind(this));
+            pageButton.addEventListener('click', filter.goToPage.bind(filter));
             pageButton.appendChild(document.createTextNode(i + 1));
             lastButton.parentElement.insertBefore(pageButton, lastButton);
         }
