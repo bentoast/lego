@@ -137,14 +137,7 @@ function filterTable() {
   }
 }
 
-function test() {
-  console.log("test");
-}
-
-document.body.addEventListener('load', () => { 
-  console.log('hello');
-  test();
-  finder.init(); });
+finder.init();
 document.querySelectorAll('[data-event]').forEach(e => {
   e.addEventListener(e.dataset.event, finder[e.dataset.eventAction].bind(finder));
 });
