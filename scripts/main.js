@@ -40,12 +40,12 @@ var finder = {
       this.clearTable();
       //The call back could be taken out of the function and made a separate function
       LegoService.getMultiple(params, function(results) {
-        filter.sets = [];
+        finder.sets = [];
         for (var e in results.results)
         {
           var n = new LegoSet(results.results[e]);
           n.CreateRow();
-          filter.sets.push(n);
+          finder.sets.push(n);
         }
 
         let navElement = document.getElementById('backButton').parentElement;
@@ -65,7 +65,7 @@ var finder = {
             let pageButton = document.createElement('div');
             pageButton.classList.add('navigation-button');
             pageButton.dataset.pageNumber = i + 1;
-            pageButton.addEventListener('click', filter.goToPage.bind(filter));
+            pageButton.addEventListener('click', finder.goToPage.bind(finder));
             pageButton.appendChild(document.createTextNode(i + 1));
             lastButton.parentElement.insertBefore(pageButton, lastButton);
         }
