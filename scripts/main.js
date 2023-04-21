@@ -22,11 +22,11 @@ var finder = {
     },
 
     changeFilter: function(event) {
-      if (event.target.dataset.filterType == 'order') {
+      if (event.target.dataset.filterName == 'order') {
         this.filter.order = event.target.dataset.filterValue;
       }
       else {
-        this.filter[event.target.dataset.filterType] = event.target.value;
+        this.filter[event.target.dataset.filterName] = event.target.value;
       }
       this.filter.page = 1;
       this.clearTable();
