@@ -138,5 +138,5 @@ function filterTable() {
 }
 
 document.querySelectorAll('[data-event]').forEach(e => {
-  e.addEventListener(e.dataset.event, finder[e.dataset.action].bind(finder));
+  e.addEventListener(e.dataset.event, finder[e.dataset.event].bind(finder));
 });
