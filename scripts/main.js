@@ -41,11 +41,18 @@ var finder = {
       //The call back could be taken out of the function and made a separate function
       LegoService.getMultiple(params, function(results) {
         finder.sets = [];
+
+        let navrow = document.getElementById('navigationrow');
         for (var e in results.results)
         {
           var n = new LegoSet(results.results[e]);
           n.CreateRow();
           finder.sets.push(n);
+          if (i % 2 == 0)
+            n.Element.className = "itemrow";
+          else
+            n.Element.className = "itemrow striped";
+          navrow.parentElement.insertBefore(n.Element, navrow);
         }
 
         let navElement = document.getElementById('backButton').parentElement;
