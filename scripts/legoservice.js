@@ -6,7 +6,11 @@ class LegoService {
     }
   
     static getMultiple(parameters, callback) {
-        let paramStr =  Object.keys(parameters).map(p => p + '=' + parameters[p]).join('&');
+        let paramStr =  Object.keys(parameters).map(p => {
+            if (parameters[p]) {
+                p + '=' + parameters[p];
+            }
+        }).join('&');
         Requests.GetRequest('lego.py?action=multiple&' + paramStr, null, callback);
     }
   
