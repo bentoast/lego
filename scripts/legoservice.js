@@ -8,6 +8,7 @@ class LegoService {
     static getMultiple(parameters, callback) {
         let paramStr =  Object.keys(parameters).map(p => {
             if (parameters[p]) {
+                console.log(p + ':' + parameters[p]);
                 p + '=' + parameters[p];
             }
         }).join('&');
