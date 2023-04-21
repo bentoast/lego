@@ -33,7 +33,7 @@ var finder = {
     },
 
     init: function() {
-      CreateTable(this.filter);
+      this.CreateTable(this.filter);
     },
     
     CreateTable: function(params) {
