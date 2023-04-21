@@ -6,92 +6,101 @@
 <link rel="stylesheet" href="styles/main.css" />
 <script type="module" src="./scripts/main.js"></script>
 </head>
-<body>
+<body data-event="load" data-event-action="init">
 <table id="settable">
   <tr class="titlerow">
     <td colspan="2">Sets</td>
-    <td colspan="7">Find Set: <input type="text" onchange="findset(this);" /></td>
+    <td colspan="7">Find Set: <input type="text" data-event="change" data-event-action="findset" /></td>
   </tr>
   <tr>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="havefilter"
-        data-filter-name="have"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="have" />
     </td>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="trackedfilter"
-        data-filter-name="track"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="track" />
     </td>
     <td>
       <input
         type="text"
         style="width: 50px;"
         id="setidfilter"
-        data-filter-name="setid"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="setid" />
     </td>
     <td>
       <input
         type="text"
         style="width: 100%"
         id="namefilter"
-        data-filter-name="name"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="name" />
     </td>
     <td>
       <input
         type="text"
         style="text-align: right; width: 85px;"
         id="pricefilter"
-        data-filter-name="price"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="price" />
     </td>
     <td>
       <input
         type="text"
         style="text-align: right; width: 85px;"
         id="originalfilter"
-        data-filter-name="originalprice"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="originalprice" />
     </td>
     <td>
       <input
         type="text"
         style="text-align: right; width: 55px;"
         id="discountfilter"
-        data-filter-name="discount"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="discount" />
     </td>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="retiringfilter"
-        data-filter-name="retiring"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="retiring" />
     </td>
     <td style="text-align: center;">
       <input
         type="checkbox"
         id="newfilter"
-        data-filter-name="new"
-        data-filter-action="change" />
+        data-event="change"
+        data-event-action="changeFilter"
+        data-filter-name="new" />
     </td>
   </tr>
   <tr class="headerrow">
     <td>Have</td>
     <td>Track</td>
-    <td data-filter-name="order" data-filter-value="setid" data-filter-action="click">Set Id</td>
-    <td data-filter-name="order" data-filter-value="name" data-filter-action="click">Name</td>
-    <td data-filter-name="order" data-filter-value="price" data-filter-action="click" class="right-justify">Current Price</td>
-    <td data-filter-name="order" data-filter-value="originalprice" data-filter-action="click" class="right-justify">Original Price</td>
-    <td data-filter-name="order" data-filter-value="discount" data-filter-action="click" class="right-justify">Discount</td>
-    <td data-filter-name="order" data-filter-value="retiring" data-filter-action="click" class="center-justify">Retiring</td>
-    <td data-filter-name="order" data-filter-value="new" data-filter-action="click" class="center-justify">New</td>
+    <td data-filter-name="order" data-filter-value="setid" data-event="click" data-event-action="changeFilter">Set Id</td>
+    <td data-filter-name="order" data-filter-value="name" data-event="click" data-event-action="changeFilter">Name</td>
+    <td data-filter-name="order" data-filter-value="price" data-event="click" data-event-action="changeFilter" class="right-justify">Current Price</td>
+    <td data-filter-name="order" data-filter-value="originalprice" data-event="click" data-event-action="changeFilter" class="right-justify">Original Price</td>
+    <td data-filter-name="order" data-filter-value="discount" data-event="click" data-event-action="changeFilter" class="right-justify">Discount</td>
+    <td data-filter-name="order" data-filter-value="retiring" data-event="click" data-event-action="changeFilter" class="center-justify">Retiring</td>
+    <td data-filter-name="order" data-filter-value="new" data-event="click" data-event-action="changeFilter" class="center-justify">New</td>
   </tr>
   <tr id="navigationrow">
     <td colspan="9">
@@ -99,15 +108,17 @@
         <div
           id="backButton"
           class="navigation-button"
+          data-event="change"
+          data-event-action="changeFilter"
           data-filter-name="page"
-          data-filter-amount="-1"
-          data-filter-action="click">&lt;&lt;</div>
+          data-filter-amount="-1">&lt;&lt;</div>
         <div
           id="forwardButton"
           class="navigation-button"
+          data-event="change"
+          data-event-action="changeFilter"
           data-filter-name="page"
-          data-filter-amount="1"
-          data-filter-action="click">&gt;&gt;</div>
+          data-filter-amount="1">&gt;&gt;</div>
       </div>
     </td>
   </tr>

@@ -29,10 +29,10 @@ class LegoService {
     retiring;
     new;
 
-    page;
-    count;
+    page = 1;
+    count = 25;
 
-    order;
+    order = 'name';
   }
 
   export { LegoService, LegoFilter };
