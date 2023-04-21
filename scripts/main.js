@@ -22,7 +22,12 @@ var finder = {
     },
 
     changeFilter: function(event) {
-      this.filter[event.target.dataset.filterType] = event.target.value;
+      if (event.target.dataset.filterType == 'order') {
+        this.filter.order = event.target.dataset.filterValue;
+      }
+      else {
+        this.filter[event.target.dataset.filterType] = event.target.value;
+      }
       this.filter.page = 1;
       this.clearTable();
       this.CreateTable(this.filter);
@@ -91,59 +96,9 @@ var finder = {
           var curSet = new LegoSet(r);
           curSet.CreateRow();
           sets.push(curSet);
-          filterTable();
         }
       }
     },
-}
-
-function filterTable() {
-  for (var i in sets)
-  {
-    sets[i].Element.remove();
-  }
-  
-  var filteredSet = sets;
-  
-  //All these need to be collected and sent by "GetMultiple"
-  var currentFilter = document.getElementById('havefilter');
-  if (currentFilter['checked'])
-    filteredSet = filteredSet.filter(f => f['have']);
-  currentFilter = document.getElementById('trackedfilter');
-  if (currentFilter['checked'])
-    filteredSet = filteredSet.filter(f => f['tracked']);
-  currentFilter = document.getElementById('setidfilter');
-  if (currentFilter['value'])
-    filteredSet = filteredSet.filter(f => f['setid'].toLowerCase().includes(currentFilter['value'].toLowerCase()));
-  currentFilter = document.getElementById('namefilter');
-  if (currentFilter['value'])
-    filteredSet = filteredSet.filter(f => f['name'].toLowerCase().includes(currentFilter['value'].toLowerCase()));
-  currentFilter = document.getElementById('pricefilter');
-  if (currentFilter['value'])
-    filteredSet = filteredSet.filter(f => f['price'] <= currentFilter['value']);
-  currentFilter = document.getElementById('originalfilter');
-  if (currentFilter['value'])
-    filteredSet = filteredSet.filter(f => f['originalprice'] <= currentFilter['value']);
-  currentFilter = document.getElementById('discountfilter');
-  if (currentFilter['value'])
-    filteredSet = filteredSet.filter(f => f['discount'] >= (currentFilter['value'] / 100));
-  currentFilter = document.getElementById('retiringfilter');
-  if (currentFilter['checked'])
-    filteredSet = filteredSet.filter(f => f['retiring']);
-  currentFilter = document.getElementById('newfilter');
-  if (currentFilter['checked'])
-    filteredSet = filteredSet.filter(f => f['new']);
-  
-  let navrow = document.getElementById('navigationrow');
-  for (var i in filteredSet)
-  {
-    var n = filteredSet[i];
-    if (i % 2 == 0)
-      n.Element.className = "itemrow";
-    else
-      n.Element.className = "itemrow striped";
-    navrow.parentElement.insertBefore(n.Element, navrow);
-  }
 }
 
 finder.init();
