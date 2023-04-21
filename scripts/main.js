@@ -25,9 +25,10 @@ var finder = {
       if (event.target.dataset.filterName == 'order') {
         this.filter.order = event.target.dataset.filterValue;
       }
+      else if (event.target.type == 'checkbox') {
+        this.filter[event.target.dataset.filterName] = event.target.checked;
+      }
       else {
-        console.log(event.target.dataset.filterName);
-        console.log(event.target.value);
         this.filter[event.target.dataset.filterName] = event.target.value;
       }
       this.filter.page = 1;
