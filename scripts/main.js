@@ -26,6 +26,8 @@ var finder = {
         this.filter.order = event.target.dataset.filterValue;
       }
       else {
+        console.log(event.target.dataset.filterName);
+        console.log(event.target.value);
         this.filter[event.target.dataset.filterName] = event.target.value;
       }
       this.filter.page = 1;
