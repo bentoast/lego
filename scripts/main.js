@@ -43,6 +43,7 @@ var finder = {
         finder.sets = [];
 
         let navrow = document.getElementById('navigationrow');
+        let i = 0;
         for (var e in results.results)
         {
           var n = new LegoSet(results.results[e]);
@@ -53,6 +54,7 @@ var finder = {
           else
             n.Element.className = "itemrow striped";
           navrow.parentElement.insertBefore(n.Element, navrow);
+          i++;
         }
 
         let navElement = document.getElementById('backButton').parentElement;
