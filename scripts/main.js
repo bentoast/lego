@@ -11,7 +11,7 @@ var finder = {
         if (event.target.dataset.pageChange == 'back' && this.filter.page > 1) {
             this.filter.page--;
         }
-        else if (this.filter.page < this.totalCount / this.filter.count) {
+        else if (event.target.dataset.pageChange = 'forward' && this.filter.page < this.totalCount / this.filter.count) {
             this.filter.page++;
         }
         this.clearTable();
