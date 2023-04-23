@@ -55,7 +55,7 @@ def getSets(filter, order, count, page):
     params['setid'] = filter['setid']
 
   if 'name' in filter:
-    clauses.append('ls.Name LIKE %(name)s')
+    clauses.append('LOWER(ls.Name) LIKE LOWER(%(name)s)')
     params['name'] = '%{}%'.format(filter['name'])
 
   bottomClause = bottomClause + ' AND '.join(clauses)
