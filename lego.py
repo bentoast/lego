@@ -63,16 +63,16 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
 def MultipleRequest(request):
   nset = None
   if 'new' in request:
-    nset = request['new'] == 'yes'
+    nset = request['new'] == 'true'
   rset = None
   if 'retiring' in request:
-    rset = request['retiring'] == 'yes'
+    rset = request['retiring'] == 'true'
   mind = 0.00
   maxd = 1.00
   if 'discount' in request:
-    if request['discount'] == 'yes':
+    if request['discount'] == 'true':
       mind = 0.01
-    elif request['discount'] == 'no':
+    elif request['discount'] == 'false':
       maxd = 0.01
   page = 1
   if 'page' in request:
@@ -81,7 +81,7 @@ def MultipleRequest(request):
   if 'count' in request:
     count = int(request['count'])
   (allCount, allLines) = getSets(nset, rset, mind, maxd, count, page)
-  print(request)
+
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
 def SingleRequest(request):
