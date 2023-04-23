@@ -99,9 +99,9 @@ var finder = {
             if (i + 1 == finder.filter.page) {
               pageButton.classList.add('current-page');
             }
-            pageButton.dataset.pageNumber = finder.filter.page + i + 1;
+            pageButton.dataset.pageNumber = finder.filter.page + i;
             pageButton.addEventListener('click', finder.goToPage.bind(finder));
-            pageButton.appendChild(document.createTextNode(finder.filter.page + i + 1));
+            pageButton.appendChild(document.createTextNode(finder.filter.page + i));
             lastButton.parentElement.insertBefore(pageButton, lastButton);
         }
       });
