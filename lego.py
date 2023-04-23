@@ -81,7 +81,7 @@ def MultipleRequest(request):
   if 'count' in request:
     count = int(request['count'])
   (allCount, allLines) = getSets(nset, rset, mind, maxd, count, page)
-  
+  print(request)
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
 def SingleRequest(request):
