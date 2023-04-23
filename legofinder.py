@@ -14,6 +14,21 @@ import legoSettings as ls
 changedSets = {}
 sameSets = {}
 
+def findSet(setid):
+  curSet = None
+  setcount = runCheck('https://lego.com/en-us/product/{}'.format(setid), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]')
+  
+  if len(sameSets) > 0:
+    curSet = list(sameSets.values())[0]
+  elif len(changedSets) > 0:
+    setcount = 8
+    curSet = list(changedSets.values())[0]
+    
+  if curSet != None:
+    return (curSet, setcount)
+  else:
+    return (None, 0)
+
 def getSetInfo(element):
   currentSet = LegoSet()
     

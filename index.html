@@ -13,6 +13,7 @@
     <td colspan="7">Find Set: <input type="text" data-event="change" data-event-action="findset" /></td>
   </tr>
   <tr>
+    <!--Checkboxes acutally need to be tristate fields  |YES|NEITHER|NO|-->
     <td style="text-align: center;">
       <input
         type="checkbox"
@@ -109,16 +110,14 @@
           id="backButton"
           class="navigation-button"
           data-event="change"
-          data-event-action="changeFilter"
-          data-filter-name="page"
-          data-filter-amount="-1">&lt;&lt;</div>
+          data-event-action="changePage"
+          data-page-change="back">&lt;&lt;</div>
         <div
           id="forwardButton"
           class="navigation-button"
           data-event="change"
-          data-event-action="changeFilter"
-          data-filter-name="page"
-          data-filter-amount="1">&gt;&gt;</div>
+          data-event-action="changePage"
+          data-page-change="forward">&gt;&gt;</div>
       </div>
     </td>
   </tr>

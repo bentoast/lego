@@ -3,10 +3,19 @@ import { LegoService, LegoFilter } from "./legoservice.js";
 
 var finder = {
     sets: [],
+    totalCount: 0,
     filter: new LegoFilter(),
 
-    changePage: function(direction) {
-        console.log(direction);
+    changePage: function(event) {
+        //Just guarding against overflows
+        if (event.target.dataset.pageChange == 'back' && this.filter.page > 1) {
+            this.filter.page--;
+        }
+        else if (this.filter.page < this.totalCount / this.filter.count) {
+            this.filter.page++;
+        }
+        this.clearTable();
+        this.CreateTable(this.filter);
     },
 
     goToPage: function(event) {
@@ -24,14 +33,16 @@ var finder = {
     changeFilter: function(event) {
       if (event.target.dataset.filterName == 'order') {
         this.filter.order = event.target.dataset.filterValue;
+        this.filter.page = 1;
       }
       else if (event.target.type == 'checkbox') {
         this.filter[event.target.dataset.filterName] = event.target.checked;
+        this.filter.page = 1;
       }
       else {
         this.filter[event.target.dataset.filterName] = event.target.value;
+        this.filter.page = 1;
       }
-      this.filter.page = 1;
       this.clearTable();
       this.CreateTable(this.filter);
     },
@@ -77,7 +88,8 @@ var finder = {
         }
     
         let lastButton = document.getElementById('forwardButton');
-        let totalPages = Math.ceil(results.total / 25);
+        this.totalCount = results.total;
+        let totalPages = Math.ceil(results.total / this.filter.count);
         for (let i = 0; i < totalPages; i++) {
             let pageButton = document.createElement('div');
             pageButton.classList.add('navigation-button');
@@ -104,6 +116,7 @@ var finder = {
     },
 }
 
+//Initialize the page and the event listeners
 finder.init();
 document.querySelectorAll('[data-event]').forEach(e => {
   e.addEventListener(e.dataset.event, finder[e.dataset.eventAction].bind(finder));

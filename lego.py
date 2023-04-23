@@ -85,18 +85,9 @@ def MultipleRequest(request):
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
 def SingleRequest(request):
-  curSet = None
-  setcount = lf.runCheck('https://lego.com/en-us/product/{}'.format(request['setid']), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]')
-  
-  if len(lf.sameSets) > 0:
-    curSet = list(lf.sameSets.values())[0]
-  elif len(lf.changedSets) > 0:
-    setcount = 8
-    curSet = list(lf.changedSets.values())[0]
-    
-  if curSet != None:
-    curSet.save()
-    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": false, "have": false }}]'''.format(curSet.name.replace('"', '\\"'), curSet.salePrice, curSet.originalPrice, curSet.discount, str(curSet.retiring).lower(), str(curSet.new).lower(), curSet.modified, curSet.setid))
+  (updatedSet, setcount) = lf.findSet(request['setid'])
+  if updatedSet != None:
+    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": false, "have": false }}]'''.format(updatedSet.name.replace('"', '\\"'), updatedSet.salePrice, updatedSet.originalPrice, updatedSet.discount, str(updatedSet.retiring).lower(), str(updatedSet.new).lower(), updatedSet.modified, updatedSet.setid))
   else:
     print('[{{"status": "failure", "setcount": {} }}]'.format(setcount))
   
