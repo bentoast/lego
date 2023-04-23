@@ -88,8 +88,8 @@ var finder = {
         }
     
         let lastButton = document.getElementById('forwardButton');
-        this.totalCount = results.total;
-        let totalPages = Math.ceil(results.total / this.filter.count);
+        finder.totalCount = results.total;
+        let totalPages = Math.ceil(results.total / finder.filter.count);
         for (let i = 0; i < totalPages; i++) {
             let pageButton = document.createElement('div');
             pageButton.classList.add('navigation-button');
