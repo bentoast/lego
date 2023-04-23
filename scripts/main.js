@@ -96,7 +96,7 @@ var finder = {
         for (let i = 0; i < maxPages; i++) {
             let pageButton = document.createElement('div');
             pageButton.classList.add('navigation-button');
-            if (i + 1 == finder.filter.page) {
+            if (i + finder.filter.page == finder.filter.page) {
               pageButton.classList.add('current-page');
             }
             pageButton.dataset.pageNumber = finder.filter.page + i;
