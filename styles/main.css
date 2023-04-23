@@ -71,3 +71,10 @@ body {
   .center-justify {
     text-align: center;
   }
+
+  .current-page {
+    background: #3474eb;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+  }
