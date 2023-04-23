@@ -109,11 +109,8 @@ def UpdateRequest(jsondata):
   print('{{"status":"success"}}')
 
 def FormatFormData(formdata):
-  parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action' and key != 'order'])
-  order = 'name'
-  if 'order' in formdata:
-    order = formdata['order'].value
-  return f'{{ "action": "{formdata["action"].value}", "order": "{order}", "parameters": {{ {parameters} }} }}'
+  parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
+  return f'{{ "action": "{formdata["action"].value}", "parameters": {{ {parameters} }} }}'
 
 def ProcessRequest(requestData):
   routes = {
