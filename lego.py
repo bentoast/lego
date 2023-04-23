@@ -11,7 +11,7 @@ from legoset import LegoSet
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
 
-def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
+def getSets(filter, order, count, page):
   statement = '''SELECT 
       ls.Name,
       ls.Price,
@@ -32,15 +32,23 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
     'ls.OriginalPrice IS NOT NULL',
     'ls.Discount < %(mindiscount)s',
     'ls.Discount >= %(maxdiscount)s']
-  params = { 'maxdiscount': maxdiscount, 'mindiscount':mindiscount }
+  params = { 'maxdiscount': 0, 'mindiscount':1 }
   
-  if newsets != None:
+  if 'new' in filter:
     clauses.append('ls.New = %(new)s')
-    params['new'] = newsets
+    params['new'] = filter['new']
     
-  if retiringsets != None:
+  if 'retiring' in filter:
     clauses.append('ls.Retiring = %(retiring)s')
-    params['retiring'] = retiringsets
+    params['retiring'] = filter['retiring']
+
+  if 'have' in filter:
+    clauses.append('lt.Have = %(have)s')
+    params['have'] = filter['have']
+  
+  if 'track' in filter:
+    clauses.append('lt.Track = %(track)s')
+    params['track'] = filter['track']
 
   bottomClause = bottomClause + ' AND '.join(clauses)
 
@@ -48,7 +56,7 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
   countResult = ls.getOne(countStatement, params)
 
   if count > 0:
-    statement = '''{} {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, count, (page - 1) * count)
+    statement = '''{} {} ORDER BY {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, order, count, (page - 1) * count)
   else:
     statement = '''{} {}'''.format(statement, bottomClause)
     
@@ -61,26 +69,24 @@ def getSets(newsets, retiringsets, maxdiscount, mindiscount, count, page):
   return (countResult[0], final)
   
 def MultipleRequest(request):
-  nset = None
+  filter = {}
   if 'new' in request:
-    nset = request['new'] == 'true'
-  rset = None
+    filter['new'] = request['new'] == 'true'
   if 'retiring' in request:
-    rset = request['retiring'] == 'true'
-  mind = 0.00
-  maxd = 1.00
-  if 'discount' in request:
-    if request['discount'] == 'true':
-      mind = 0.01
-    elif request['discount'] == 'false':
-      maxd = 0.01
+    filter['retiring'] = request['retiring'] == 'true'
+  if 'have' in request:
+    filter['have'] = request['have'] == 'true'
+  if 'track' in request:
+    filter['track'] = request['track'] == 'true'
+    
   page = 1
   if 'page' in request:
     page = int(request['page'])
-  count = -1
+  count = 10
   if 'count' in request:
     count = int(request['count'])
-  (allCount, allLines) = getSets(nset, rset, mind, maxd, count, page)
+
+  (allCount, allLines) = getSets(filter, request['order'], count, page)
 
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
