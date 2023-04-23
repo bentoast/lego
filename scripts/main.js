@@ -19,7 +19,7 @@ var finder = {
     },
 
     goToPage: function(event) {
-        this.filter.page = event.target.dataset.pageNumber;
+        this.filter.page = parseInt(event.target.dataset.pageNumber);
         this.CreateTable(this.filter);
     },
 
