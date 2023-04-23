@@ -50,6 +50,14 @@ def getSets(filter, order, count, page):
     clauses.append('lt.Track = %(track)s')
     params['track'] = filter['track']
 
+  if 'setid' in filter:
+    clauses.append('ls.SetId = %(setid)s')
+    params['setid'] = filter['setid']
+
+  if 'name' in filter:
+    clauses.append('ls.Name LIKE %(name)s')
+    params['name'] = '%{}%'.format(filter['name'])
+
   bottomClause = bottomClause + ' AND '.join(clauses)
 
   countStatement = 'SELECT COUNT(*) {}'.format(bottomClause)
@@ -78,6 +86,10 @@ def MultipleRequest(request):
     filter['have'] = request['have'] == 'true'
   if 'track' in request:
     filter['track'] = request['track'] == 'true'
+  if 'setid' in request:
+    filter['setid'] = request['setid']
+  if 'name' in request:
+    filter['name'] = request['name']
     
   page = 1
   if 'page' in request:
