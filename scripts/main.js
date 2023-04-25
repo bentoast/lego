@@ -107,15 +107,33 @@ var finder = {
     getPageList: function() {
       let pages = [];
       let totalPages = Math.ceil(this.totalCount / this.filter.count);
-      if (totalPages <= 10)
+      if (totalPages <= 10) {
         for (let current = 1; current <= totalPages; current++)
           pages.push(current + '');
         return pages;
+      }
 
-      let maxPages = 10;
-      if (totalPages < maxPages)
-        maxPages = totalPages;
-      return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+      pages.push('1');
+      let minWindow = this.filter.page - 2;
+      let maxWindow = this.filter.page + 3;
+      if (minWindow < 3) {
+        let distance = 3 - minWindow;
+        minWindow += distance;
+        maxWindow += distance;
+      }
+      else if (maxWindow > totalPages - 2) {
+        let distance = maxWindow - (totalPages - 2);
+        minWindow -= distance;
+        maxWindow -= distance;
+      }
+      if (minWindow > 3)
+        pages.push('...');
+      for (let current = minWindow; current <= maxWindow; current++)
+        pages.push(current + '');
+      if (maxWindow < totalPages - 2)
+        pages.push('...');
+      pages.push(totalPages + '');
+      return pages;
     },
 
     addToList: function(results) {
