@@ -88,23 +88,30 @@ var finder = {
         }
     
         let lastButton = document.getElementById('forwardButton');
-        finder.totalCount = results.total;
+        if (finder.filter.page > 10)
+          finder.totalCount = results.total;
+        let pages = finder.getPageList();
+        for (let currentPage of pages) {
+            let pageButton = document.createElement('div');
+            pageButton.classList.add('navigation-button');
+            if (currentPage == finder.filter.page) {
+              pageButton.classList.add('current-page');
+            }
+            pageButton.dataset.pageNumber = currentPage;
+            pageButton.addEventListener('click', finder.goToPage.bind(finder));
+            pageButton.appendChild(document.createTextNode(currentPage));
+            lastButton.parentElement.insertBefore(pageButton, lastButton);
+        }
+      });
+    },
+
+    getPageList: function() {
+      let pages = ['1','2','3',];
         let totalPages = Math.ceil(results.total / finder.filter.count);
         let maxPages = 10;
         if (totalPages < maxPages)
           maxPages = totalPages;
-        for (let i = 0; i < maxPages; i++) {
-            let pageButton = document.createElement('div');
-            pageButton.classList.add('navigation-button');
-            if (i + finder.filter.page == finder.filter.page) {
-              pageButton.classList.add('current-page');
-            }
-            pageButton.dataset.pageNumber = finder.filter.page + i;
-            pageButton.addEventListener('click', finder.goToPage.bind(finder));
-            pageButton.appendChild(document.createTextNode(finder.filter.page + i));
-            lastButton.parentElement.insertBefore(pageButton, lastButton);
-        }
-      });
+      return pages;
     },
 
     addToList: function(results) {
