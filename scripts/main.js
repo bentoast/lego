@@ -88,8 +88,7 @@ var finder = {
         }
     
         let lastButton = document.getElementById('forwardButton');
-        if (finder.filter.page > 10)
-          finder.totalCount = results.total;
+        finder.totalCount = results.total;
         let pages = finder.getPageList();
         for (let currentPage of pages) {
             let pageButton = document.createElement('div');
@@ -112,7 +111,7 @@ var finder = {
         for (let current = 1; current <= totalPages; current++)
           pages.push(current + '');
         return pages;
-        
+
       let maxPages = 10;
       if (totalPages < maxPages)
         maxPages = totalPages;
