@@ -106,11 +106,16 @@ var finder = {
     },
 
     getPageList: function() {
-      let pages = ['1','2','3',];
-        let totalPages = Math.ceil(this.totalCount / this.filter.count);
-        let maxPages = 10;
-        if (totalPages < maxPages)
-          maxPages = totalPages;
+      let pages = [];
+      let totalPages = Math.ceil(this.totalCount / this.filter.count);
+      if (totalPages <= 10)
+        for (let current = 1; current <= totalPages; current++)
+          pages.push(current + '');
+        return pages;
+        
+      let maxPages = 10;
+      if (totalPages < maxPages)
+        maxPages = totalPages;
       return pages;
     },
 
