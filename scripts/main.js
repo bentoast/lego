@@ -107,7 +107,7 @@ var finder = {
 
     getPageList: function() {
       let pages = ['1','2','3',];
-        let totalPages = Math.ceil(results.total / finder.filter.count);
+        let totalPages = Math.ceil(this.totalCount / this.filter.count);
         let maxPages = 10;
         if (totalPages < maxPages)
           maxPages = totalPages;
