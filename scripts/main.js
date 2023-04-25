@@ -128,10 +128,14 @@ var finder = {
       }
       if (minWindow > 3)
         pages.push('...');
+      else
+        pages.push('2');
       for (let current = minWindow; current <= maxWindow; current++)
         pages.push(current + '');
       if (maxWindow < totalPages - 2)
         pages.push('...');
+      else
+        pages.push((totalPages - 1) + '');
       pages.push(totalPages + '');
       return pages;
     },
