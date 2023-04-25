@@ -115,7 +115,7 @@ var finder = {
       let maxPages = 10;
       if (totalPages < maxPages)
         maxPages = totalPages;
-      return pages;
+      return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
     },
 
     addToList: function(results) {
