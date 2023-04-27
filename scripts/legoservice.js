@@ -36,6 +36,7 @@ class LegoService {
     count = 25;
 
     order = 'name';
+    asc = true;
   }
 
   export { LegoService, LegoFilter };

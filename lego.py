@@ -11,7 +11,7 @@ from legoset import LegoSet
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
 
-def getSets(filter, order, count, page):
+def getSets(filter, order, asc, count, page):
   statement = '''SELECT 
       ls.Name,
       ls.Price,
@@ -72,8 +72,12 @@ def getSets(filter, order, count, page):
   countStatement = 'SELECT COUNT(*) {}'.format(bottomClause)
   countResult = ls.getOne(countStatement, params)
 
+  direction = 'ASC'
+  if not asc:
+    direction = 'DESC'
+
   if count > 0:
-    statement = '''{} {} ORDER BY {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, order, count, (page - 1) * count)
+    statement = '''{} {} ORDER BY {} {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, order, direction, count, (page - 1) * count)
   else:
     statement = '''{} {}'''.format(statement, bottomClause)
     
@@ -109,7 +113,7 @@ def MultipleRequest(request):
   if 'count' in request:
     count = int(request['count'])
 
-  (allCount, allLines) = getSets(filter, request['order'], count, page)
+  (allCount, allLines) = getSets(filter, request['order'], request['asc'], count, page)
 
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
