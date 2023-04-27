@@ -72,9 +72,9 @@ def getSets(filter, order, asc, count, page):
   countStatement = 'SELECT COUNT(*) {}'.format(bottomClause)
   countResult = ls.getOne(countStatement, params)
 
-  direction = 'ASC'
-  if not asc:
-    direction = 'DESC'
+  direction = 'DESC'
+  if asc:
+    direction = 'ASC'
 
   if count > 0:
     statement = '''{} {} ORDER BY {} {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, order, direction, count, (page - 1) * count)
@@ -113,7 +113,7 @@ def MultipleRequest(request):
   if 'count' in request:
     count = int(request['count'])
 
-  (allCount, allLines) = getSets(filter, request['order'], request['asc'], count, page)
+  (allCount, allLines) = getSets(filter, request['order'], 'asc' in request and request['asc'], count, page)
 
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
