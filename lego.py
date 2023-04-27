@@ -50,6 +50,9 @@ def getSets(filter, order, count, page):
     clauses.append('lt.Track = %(track)s')
     params['track'] = filter['track']
 
+  if 'discount' in filter and filter['discount']:
+    clauses.append('COALESCE(ls.Discount, 0) > 0')
+
   #This is math. We want to see if the SetId starts with the same digits as what we're passing
   #If we pass 41, we want 41234, 4140, 418954, etc.
   #We can express all numbers as n * 10^x. 41 is 4.1 * 10^1, 41234 is 4.1234 * 10^4, etc.
@@ -96,6 +99,8 @@ def MultipleRequest(request):
     filter['setid'] = request['setid']
   if 'name' in request:
     filter['name'] = request['name']
+  if 'discount' in request:
+    filter['discount'] = request['discount'] == 'true'
     
   page = 1
   if 'page' in request:
