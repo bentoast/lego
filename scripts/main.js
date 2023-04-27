@@ -32,8 +32,14 @@ var finder = {
 
     changeFilter: function(event) {
       if (event.target.dataset.filterName == 'order') {
-        this.filter.order = event.target.dataset.filterValue;
-        this.filter.page = 1;
+        if (this.filter.order == event.target.dataset.filterValue) {
+          this.filter.asc = !this.filter.asc;
+        }
+        else {
+          this.filter.order = event.target.dataset.filterValue;
+          this.filter.page = 1;
+          this.filter.asc = true;
+        }
       }
       else if (event.target.type == 'checkbox') {
         this.filter[event.target.dataset.filterName] = event.target.checked;
