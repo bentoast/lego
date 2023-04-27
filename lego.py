@@ -50,8 +50,14 @@ def getSets(filter, order, count, page):
     clauses.append('lt.Track = %(track)s')
     params['track'] = filter['track']
 
+  #This is math. We want to see if the SetId starts with the same digits as what we're passing
+  #If we pass 41, we want 41234, 4140, 418954, etc.
+  #We can express all numbers as n * 10^x. 41 is 4.1 * 10^1, 41234 is 4.1234 * 10^4, etc.
+  #The difference of exponents tells us the magnitude we need to change the number by
+  #We can find the exponents by taking the log(base 10) of the numbers.
+  #4 - 1 is 3. 10^3 is 1000. So we divide the SetId by 1000 and floor it to get 41, then we can compare
   if 'setid' in filter:
-    clauses.append('ls.SetId = %(setid)s')
+    clauses.append('floor(ls.SetId / (10 ^ (floor(log(ls.SetId)) - floor(log(%(setid)s))))) = %(setid)s')
     params['setid'] = filter['setid']
 
   if 'name' in filter:
