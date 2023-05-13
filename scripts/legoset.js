@@ -47,7 +47,7 @@ class LegoSet {
                 cell.appendChild(document.createTextNode(' '));
 
                 let blAnchor = document.createElement('a');
-                legoAnchor.classList.add('set-link');
+                blAnchor.classList.add('set-link');
                 blAnchor['href'] = 'https://www.bricklink.com/v2/catalog/catalogitem.page?S=' + this['setid'];
                 blAnchor['target'] = '_blank';
                 blAnchor.innerText = '(BL)';
@@ -55,7 +55,7 @@ class LegoSet {
                 cell.appendChild(document.createTextNode(' '));
 
                 let bsAnchor = document.createElement('a');
-                legoAnchor.classList.add('set-link');
+                bsAnchor.classList.add('set-link');
                 bsAnchor['href'] = 'https://www.brickset.com/sets/' + this['setid'];
                 bsAnchor['target'] = '_blank';
                 bsAnchor.innerText = '(BS)';
