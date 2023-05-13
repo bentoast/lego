@@ -36,20 +36,26 @@ class LegoSet {
                 let nameSpan = document.createElement('span');
                 nameSpan.innerText = this[current];
                 cell.appendChild(nameSpan);
+                cell.appendChild(document.createTextNode(' '));
 
                 let legoAnchor = document.createElement('a');
+                legoAnchor.classList.add('set-link');
                 legoAnchor['href'] = 'https://lego.com/en-us/product/' + this['setid'];
                 legoAnchor['target'] = '_blank';
                 legoAnchor.innerText = '(Lego)';
                 cell.appendChild(legoAnchor);
+                cell.appendChild(document.createTextNode(' '));
 
                 let blAnchor = document.createElement('a');
+                legoAnchor.classList.add('set-link');
                 blAnchor['href'] = 'https://www.bricklink.com/v2/catalog/catalogitem.page?S=' + this['setid'];
                 blAnchor['target'] = '_blank';
                 blAnchor.innerText = '(BL)';
                 cell.appendChild(blAnchor);
+                cell.appendChild(document.createTextNode(' '));
 
                 let bsAnchor = document.createElement('a');
+                legoAnchor.classList.add('set-link');
                 bsAnchor['href'] = 'https://www.brickset.com/sets/' + this['setid'];
                 bsAnchor['target'] = '_blank';
                 bsAnchor.innerText = '(BS)';

@@ -78,3 +78,8 @@ body {
     font-weight: bold;
     font-size: 10pt;
   }
+
+  .set-link {
+    font-size: 0.5rem;
+    font-variant: small-caps;
+  }
