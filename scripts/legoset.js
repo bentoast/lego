@@ -33,11 +33,27 @@ class LegoSet {
             let cell = document.createElement('td');
             if (current == "name")
             {
-                let anchor = document.createElement('a');
-                anchor['href'] = 'https://lego.com/en-us/product/' + this['setid'];
-                anchor['target'] = '_blank';
-                anchor.innerText = this[current];
-                cell.appendChild(anchor);
+                let nameSpan = document.createElement('span');
+                nameSpan.innerText = this[current];
+                cell.appendChild(nameSpan);
+
+                let legoAnchor = document.createElement('a');
+                legoAnchor['href'] = 'https://lego.com/en-us/product/' + this['setid'];
+                legoAnchor['target'] = '_blank';
+                legoAnchor.innerText = '(Lego)';
+                cell.appendChild(legoAnchor);
+
+                let blAnchor = document.createElement('a');
+                blAnchor['href'] = 'https://www.bricklink.com/v2/catalog/catalogitem.page?S=' + this['setid'];
+                blAnchor['target'] = '_blank';
+                blAnchor.innerText = '(BL)';
+                cell.appendChild(blAnchor);
+
+                let bsAnchor = document.createElement('a');
+                bsAnchor['href'] = 'https://www.brickset.com/sets/' + this['setid'];
+                bsAnchor['target'] = '_blank';
+                bsAnchor.innerText = '(BS)';
+                cell.appendChild(bsAnchor);
             }
             else
             {
