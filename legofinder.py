@@ -88,9 +88,22 @@ def runCheck(site, xpath):
         sameSets[setInfo.setid] = setInfo
       count = count + 1
   except urllib.error.HTTPError as err:
-    print(site)
-    print(err.code)
-    print('url lib error')
+    errorBody = f'{site}\r\n'
+    errorBody = f'{errorBody}{err.code}\r\n'
+    errorBody = f'{errorBody}{err.reason}\r\n'
+    errorBody = f'{errorBody}url lib error\r\n'
+    
+    message = MIMEText(errorBody, 'html')
+    message['subject'] = 'Error - The Lab'
+    message['from'] = ls.settings['email']
+    message['to'] = ls.settings['email']
+    session = smtplib.SMTP(ls.settings['emailhost'], ls.settings['emailport'])
+    context = ssl.create_default_context()
+    session.starttls(context=context)
+    session.login(ls.settings['email'], ls.settings['emailpassword'])
+    session.sendmail(ls.settings['email'], ls.settings['email'], message.as_string())
+    session.quit()
+
     return count
   except http.client.IncompleteRead:
     return runCheck(site, xpath)
