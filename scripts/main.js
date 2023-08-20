@@ -54,7 +54,7 @@ var finder = {
     },
 
     findset: function(source) {
-      LegoService.getSingle(source['value'], this.addToList.bind(this));
+      LegoService.getSingle(source.target.value, this.addToList.bind(this));
     },
 
     init: function() {
