@@ -16,7 +16,7 @@ sameSets = {}
 
 def findSet(setid):
   curSet = None
-  setcount = runCheck('https://lego.com/en-us/product/{}'.format(setid), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]')
+  setcount = runCheck('https://lego.com/en-us/product/{}'.format(setid), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]')
   
   if len(sameSets) > 0:
     curSet = list(sameSets.values())[0]
@@ -32,7 +32,7 @@ def findSet(setid):
 def getSetInfo(element):
   currentSet = LegoSet()
     
-  code = element.xpath('//span[@itemprop="productID"]/text()')
+  code = element.xpath('//span[@itemprop="sku"]/text()')
   #This will also contain product codes
   hrefString = element.xpath('.//a[@data-test="product-leaf-title-link"]/@href')
   if hrefString != None and len(hrefString) > 0:
@@ -78,8 +78,10 @@ def runCheck(site, xpath):
     request = urllib.request.Request(site, headers={'User-Agent': 'Mozilla/5.0'})
     orig = urllib.request.urlopen(request, context=sslcontext)
     info = orig.read()
+    
     parser = html.fromstring(info.decode('ascii', errors='ignore'))
     setList = parser.xpath(xpath)
+    
     for current in setList:
       setInfo = getSetInfo(current)
       if setInfo != None and setInfo.isDifferent():
@@ -144,7 +146,7 @@ def getUncheckedSets(checkedList):
   results = ls.getAll('SELECT SetId FROM LegoSet WHERE CanCheck = \'t\' {}'.format(end), tuple(checkedList))
   
   for current in results:
-    if runCheck('https://lego.com/en-us/product/{}'.format(current[0]), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-0 jkfnqG"]') == 0:
+    if runCheck('https://lego.com/en-us/product/{}'.format(current[0]), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]') == 0:
       ls.disableCheck(current[0])
   
 if __name__ == '__main__':
