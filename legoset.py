@@ -47,22 +47,25 @@ class LegoSet:
     return jsonString
 
   def isDifferent(self):
-    dbset = ls.getOne('''
-    SELECT
-      Name,
-      Price,
-      OriginalPrice,
-      Discount,
-      Retiring,
-      New,
-      Modified,
-      SetId
-    FROM LegoSet
-    WHERE
-      SetId = %s''', (self.setid,))
-    if dbset == None or dbset[0] != self.name or dbset[1] != self.salePrice or dbset[2] != self.originalPrice or \
-      dbset[3] != self.discount or dbset[4] != self.retiring or dbset[5] != self.new:
-      return True
+    try:
+      dbset = ls.getOne('''
+      SELECT
+        Name,
+        Price,
+        OriginalPrice,
+        Discount,
+        Retiring,
+        New,
+        Modified,
+        SetId
+      FROM LegoSet
+      WHERE
+        SetId = %s''', (self.setid,))
+      if dbset == None or dbset[0] != self.name or dbset[1] != self.salePrice or dbset[2] != self.originalPrice or \
+        dbset[3] != self.discount or dbset[4] != self.retiring or dbset[5] != self.new:
+        return True
+    except:
+      return False
     return False
 
   def save(self):
