@@ -8,8 +8,8 @@ import ssl
 from lxml import html
 from decimal import Decimal
 from service.legoSet import LegoSet
-import service.legoService as ls
-import service.messageService as ms
+from service.legoService import *
+from service.messageService import *
 
 changedSets = {}
 sameSets = {}

@@ -6,7 +6,7 @@ import json
 import cgi
 import cgitb
 import service.legoService as ls
-import scraper.legofinder as lf
+import legofinder as lf
 from service.legoSet import LegoSet
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
