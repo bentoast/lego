@@ -7,7 +7,7 @@ from service.legoSet import LegoSet
 
 cgitb.enable()
 
-settingsFile = './Service/settings-local.ini'
+settingsFile = './service/settings-local.ini'
 openFile = open(settingsFile)
 settings = json.load(openFile)
 openFile.close()
