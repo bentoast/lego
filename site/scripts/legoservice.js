@@ -2,7 +2,7 @@ import { Requests } from "./requests.js";
 
 class LegoService {
     static getSingle(setid, callback) {
-        Requests.GetRequest('lego.py?action=single&setid=' + setid, null, callback);
+        Requests.GetRequest('api/lego.py?action=single&setid=' + setid, null, callback);
     }
   
     static getMultiple(parameters, callback) {
@@ -10,11 +10,11 @@ class LegoService {
             .filter(p => parameters[p])
             .map(p => p + '=' + parameters[p])
             .join('&');
-        Requests.GetRequest('lego.py?action=multiple&' + paramStr, null, callback);
+        Requests.GetRequest('api/lego.py?action=multiple&' + paramStr, null, callback);
     }
   
     static updateSet(setid, have, tracked, callback) {
-        Requests.GetRequest('lego.py', '{ "action": "update", "parameters": { "setid": ' +
+        Requests.GetRequest('api/lego.py', '{ "action": "update", "parameters": { "setid": ' +
             setid + ', "tracked": ' +
             tracked + ', "have": ' +
             have + '} }', callback);

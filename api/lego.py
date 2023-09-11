@@ -5,12 +5,12 @@ import sys
 import json
 import cgi
 import cgitb
-import legoSettings as ls
-import legofinder as lf
-from legoset import LegoSet
+import service.legoService as ls
+import scraper.legofinder as lf
+from service.legoSet import LegoSet
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
-
+#TODO remove all of the SQL from here and put it in the service
 def getSets(filter, order, asc, count, page):
   statement = '''SELECT 
       ls.Name,
@@ -118,11 +118,11 @@ def MultipleRequest(request):
   print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
   
 def SingleRequest(request):
-  (updatedSet, setcount) = lf.findSet(request['setid'])
+  updatedSet = lf.FindSingleSet(request['setid'])
   if updatedSet != None:
     print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": false, "have": false }}]'''.format(updatedSet.name.replace('"', '\\"'), updatedSet.salePrice, updatedSet.originalPrice, updatedSet.discount, str(updatedSet.retiring).lower(), str(updatedSet.new).lower(), updatedSet.modified, updatedSet.setid))
   else:
-    print('[{{"status": "failure", "setcount": {} }}]'.format(setcount))
+    print('[{{"status": "failure", "setcount": 0 }}]')
   
 def UpdateRequest(jsondata):
   countResult = ls.getOne('SELECT COUNT(*) FROM LegoTrack WHERE SetId = %s AND UserId = %s', (jsondata['setid'], 1))
