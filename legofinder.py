@@ -93,17 +93,17 @@ def ScrapeSite(site, xpath):
   
 def SendSetEmail(setList):
   emailBody = '<table><tr><td colspan="2">Retiring</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'
-  retiring = dict(filter(lambda s: s[1].retiring and s[1].originalPrice != None, setList))
+  retiring = dict(filter(lambda s: s.retiring and s.originalPrice != None, setList))
   for current in retiring.values():
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
 
   emailBody = '{}<tr><td colspan="2">New Sets</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'.format(emailBody)
-  newsets = dict(filter(lambda s: s[1].new and s[1].originalPrice != None, setList))
+  newsets = dict(filter(lambda s: s.new and s.originalPrice != None, setList))
   for current in newsets.values():
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
 
   emailBody = '{}<tr><td colspan="2">Price Changes</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'.format(emailBody)
-  priceChange = dict(filter(lambda s: not(s[1].new or s[1].retiring) and s[1].originalPrice != None, setList))
+  priceChange = dict(filter(lambda s: not(s.new or s.retiring) and s.originalPrice != None, setList))
   for current in priceChange.values():
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
   emailBody = '{}</table>'.format(emailBody)
