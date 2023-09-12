@@ -8,8 +8,8 @@ import ssl
 from lxml import html
 from decimal import Decimal
 from service.legoSet import LegoSet
-from service.legoService import *
-from service.messageService import *
+from service.legoService import saveSet, getUncheckedSets, getUpdatedSets, disableCheck
+from service.messageService import SendMessage
 
 changedSets = {}
 sameSets = {}
@@ -93,22 +93,22 @@ def ScrapeSite(site, xpath):
   
 def SendSetEmail(setList):
   emailBody = '<table><tr><td colspan="2">Retiring</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'
-  retiring = dict(filter(lambda s: s[1].retiring and s[1].originalPrice != None, setList.items()))
+  retiring = dict(filter(lambda s: s[1].retiring and s[1].originalPrice != None, setList))
   for current in retiring.values():
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
 
   emailBody = '{}<tr><td colspan="2">New Sets</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'.format(emailBody)
-  newsets = dict(filter(lambda s: s[1].new and s[1].originalPrice != None, setList.items()))
+  newsets = dict(filter(lambda s: s[1].new and s[1].originalPrice != None, setList))
   for current in newsets.values():
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
 
   emailBody = '{}<tr><td colspan="2">Price Changes</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'.format(emailBody)
-  priceChange = dict(filter(lambda s: not(s[1].new or s[1].retiring) and s[1].originalPrice != None, setList.items()))
+  priceChange = dict(filter(lambda s: not(s[1].new or s[1].retiring) and s[1].originalPrice != None, setList))
   for current in priceChange.values():
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
   emailBody = '{}</table>'.format(emailBody)
 
-  ms.SendMessage('html', 'Changes - The Lab', emailBody)
+  SendMessage('html', 'Changes - The Lab', emailBody)
   
 if __name__ == '__main__':
   categoryList = ['sales-and-deals', 'retiring-soon', 'new-sets-and-products']
@@ -123,13 +123,13 @@ if __name__ == '__main__':
       pageNumber = pageNumber + 1
       if len(foundSets) == 0:
         break
-      [ls.saveSet(current) for current in foundSets.values()]
+      [saveSet(current) for current in foundSets.values()]
 
-  sets = ls.getUncheckedSets(date)
+  sets = getUncheckedSets(date)
   for current in sets:
     foundSets = ScrapeSite('https://lego.com/en-us/product/{}'.format(current[0]), '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]')
     if len(foundSets) == 0:
-      ls.disableCheck(current[0])
+      disableCheck(current[0])
 
-  sets = ls.getUpdatedSets(date - datetime.timedelta(days=1))
+  sets = getUpdatedSets(date - datetime.timedelta(days=1))
   SendSetEmail(sets)
