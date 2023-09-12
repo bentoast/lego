@@ -79,7 +79,7 @@ def saveSet(set):
   #Check for existing set
   setcount = getOne('SELECT COUNT(*) FROM LegoSet WHERE SetId = %s', (set.setid,))
 
-  if setcount[0] == 0:
+  if len(setcount) == 0 or setcount[0] == 0:
     insertrow('''
       INSERT INTO LegoSet (Name, Price, OriginalPrice, Discount, Retiring, New, Modified, CanCheck, SetId)
       VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s, %s)''', (set.name, set.salePrice, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
