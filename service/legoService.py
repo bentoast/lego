@@ -78,6 +78,7 @@ def disableCheck(setid):
 def saveSet(set):
   #Check for existing set
   setcount = getOne('SELECT COUNT(*) AS SetCount FROM LegoSet WHERE SetId = %s', (set.setid,))
+  print(setcount)
 
   if setcount['SetCount'] == 0:
     insertrow('''
