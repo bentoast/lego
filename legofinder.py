@@ -93,18 +93,18 @@ def ScrapeSite(site, xpath):
   
 def SendSetEmail(setList):
   emailBody = '<table><tr><td colspan="2">Retiring</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'
-  retiring = dict(filter(lambda s: s.retiring and s.originalPrice != None, setList))
-  for current in retiring.values():
+  retiring = list(filter(lambda s: s.retiring and s.originalPrice != None, setList))
+  for current in retiring:
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
 
   emailBody = '{}<tr><td colspan="2">New Sets</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'.format(emailBody)
-  newsets = dict(filter(lambda s: s.new and s.originalPrice != None, setList))
-  for current in newsets.values():
+  newsets = list(filter(lambda s: s.new and s.originalPrice != None, setList))
+  for current in newsets:
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
 
   emailBody = '{}<tr><td colspan="2">Price Changes</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'.format(emailBody)
-  priceChange = dict(filter(lambda s: not(s.new or s.retiring) and s.originalPrice != None, setList))
-  for current in priceChange.values():
+  priceChange = list(filter(lambda s: not(s.new or s.retiring) and s.originalPrice != None, setList))
+  for current in priceChange:
     emailBody = '{}<tr><td><a href="https://lego.com/en-us/product/{}">{}</a></td><td>{}</td></tr>\r\n'.format(emailBody, current.setid, current.name, current.salePrice)
   emailBody = '{}</table>'.format(emailBody)
 
