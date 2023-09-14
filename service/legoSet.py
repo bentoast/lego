@@ -45,7 +45,7 @@ class LegoSet:
     self.discount = jsondata['discount'] if 'discount' in jsondata else 0
     self.name = jsondata['name'] if 'name' in jsondata else None
     self.new = jsondata['new'] if 'new' in jsondata else False
-    self.retiring in jsondata['retiring'] if 'retiring' in jsondata else False
+    self.retiring = jsondata['retiring'] if 'retiring' in jsondata else False
     self.cancheck = jsondata['cancheck'] if 'cancheck' in jsondata else False
     self.modified = jsondata['modified'] if 'modified' in jsondata else None
     self.categories = []
