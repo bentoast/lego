@@ -112,7 +112,7 @@ def getUncheckedSets(since):
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
     WHERE CanCheck = \'t\' AND Modified < %s''', (since,))
-  results = [LegoSet(current) for current in dbResults]
+  results = [LegoSet(current, 'json') for current in dbResults]
   return results
 
 def getUpdatedSets(since):
@@ -130,7 +130,7 @@ def getUpdatedSets(since):
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
     WHERE Modified > %s''', (since,))
-  results = [LegoSet(current) for current in dbResults]
+  results = [LegoSet(current, 'json') for current in dbResults]
   return results
 
 def hasChanges(item):

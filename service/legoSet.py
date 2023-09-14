@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 class LegoSet:
-  def __init__(self, dbdata = None):
-    if (dbdata != None):
+  def __init__(self, dbdata = None, format='db'):
+    if (dbdata != None and format == 'db'):
       print(dbdata)
       self.name = dbdata.get('Name')
       self.categories = []
@@ -14,6 +14,8 @@ class LegoSet:
       self.new = dbdata.get('New')
       self.modified = dbdata.get('Modified')
       self.cancheck = dbdata.get('CanCheck')
+    elif (dbdata != None and format == 'json'):
+      self.importJson(dbdata)
     else:
       self.name = None
       self.categories = []
