@@ -108,7 +108,10 @@ def getUncheckedSets(since):
       ls.Modified,
       ls.SetId,
       COALESCE(lt.Track, FALSE),
-      COALESCE(lt.Have, FALSE) FROM LegoSet ls WHERE CanCheck = \'t\' AND Modified < %s''', (since,))
+      COALESCE(lt.Have, FALSE)
+    FROM LegoSet ls
+      LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
+    WHERE CanCheck = \'t\' AND Modified < %s''', (since,))
   results = [LegoSet(current) for current in dbResults]
   return results
 
@@ -123,7 +126,10 @@ def getUpdatedSets(since):
       ls.Modified,
       ls.SetId,
       COALESCE(lt.Track, FALSE),
-      COALESCE(lt.Have, FALSE) FROM LegoSet ls WHERE Modified > %s''', (since,))
+      COALESCE(lt.Have, FALSE)
+    FROM LegoSet ls
+      LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
+    WHERE Modified > %s''', (since,))
   results = [LegoSet(current) for current in dbResults]
   return results
 
