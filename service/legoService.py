@@ -103,12 +103,12 @@ def getUncheckedSets(since):
       ls.Price,
       ls.OriginalPrice,
       ls.Discount,
-      COALESCE(ls.Retiring, FALSE),
-      COALESCE(ls.New, FALSE),
+      COALESCE(ls.Retiring, FALSE) AS Retiring,
+      COALESCE(ls.New, FALSE) AS New,
       ls.Modified,
       ls.SetId,
-      COALESCE(lt.Track, FALSE),
-      COALESCE(lt.Have, FALSE)
+      COALESCE(lt.Track, FALSE) AS Track,
+      COALESCE(lt.Have, FALSE) AS Have
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
     WHERE CanCheck = \'t\' AND Modified < %s''', (since,))
@@ -121,12 +121,12 @@ def getUpdatedSets(since):
       ls.Price,
       ls.OriginalPrice,
       ls.Discount,
-      COALESCE(ls.Retiring, FALSE),
-      COALESCE(ls.New, FALSE),
+      COALESCE(ls.Retiring, FALSE) AS Retiring,
+      COALESCE(ls.New, FALSE) AS New,
       ls.Modified,
       ls.SetId,
-      COALESCE(lt.Track, FALSE),
-      COALESCE(lt.Have, FALSE)
+      COALESCE(lt.Track, FALSE) AS Track,
+      COALESCE(lt.Have, FALSE) AS Have
     FROM LegoSet ls
       LEFT OUTER JOIN LegoTrack lt ON ls.SetId = lt.SetId
     WHERE Modified > %s''', (since,))
