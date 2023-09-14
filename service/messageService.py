@@ -3,7 +3,7 @@
 import ssl
 import smtplib
 from email.mime.text import MIMEText
-import service.legoService as ls
+import legoService as ls
 
 def SendMessage(messageType, subject, messageBody):
   message =  MIMEText(messageBody, messageType)
