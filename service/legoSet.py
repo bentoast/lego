@@ -39,22 +39,16 @@ class LegoSet:
     return desc
 
   def importJson(self, jsondata):
-    if 'setid' in jsondata:
-      self.setid = jsondata['setid']
-    if 'originalprice' in jsondata:
-      self.originalPrice = jsondata['originalprice']
-    if 'saleprice' in jsondata:
-      self.salePrice = jsondata['saleprice']
-    if 'discount' in jsondata:
-      self.discount = jsondata['discount']
-    if 'name' in jsondata:
-      self.name = jsondata['name']
-    if 'new' in jsondata:
-      self.new = jsondata['new']
-    if 'retiring' in jsondata:
-      self.retiring in jsondata['retiring']
-    if 'cancheck' in jsondata:
-      self.cancheck = jsondata['cancheck']
+    self.setid = jsondata['setid'] if 'setid' in jsondata else None
+    self.originalPrice = jsondata['originalprice'] if 'originalprice' in jsondata else None
+    self.salePrice = jsondata['saleprice'] if 'saleprice' in jsondata else None
+    self.discount = jsondata['discount'] if 'discount' in jsondata else 0
+    self.name = jsondata['name'] if 'name' in jsondata else None
+    self.new = jsondata['new'] if 'new' in jsondata else False
+    self.retiring in jsondata['retiring'] if 'retiring' in jsondata else False
+    self.cancheck = jsondata['cancheck'] if 'cancheck' in jsondata else False
+    self.modified = jsondata['modified'] if 'modified' in jsondata else None
+    self.categories = []
       
   def exportJson(self):
     jsonString = '{{ "name": "{}", "price": {}, "originalprice": {}, "retiring": {}, "new": {}, "discount": {}, "modified": "{}", "cancheck": {}, "setid": {} }}'.format(self.name, self.salePrice, self.originalPrice, self.retiring, self.new, self.discount, self.modified, self.cancheck, self.setid)
