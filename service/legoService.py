@@ -98,12 +98,32 @@ def saveSet(set):
         SetId = %s''', (set.name, set.salePrice, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
 
 def getUncheckedSets(since):
-  dbResults = getAll('SELECT SetId FROM LegoSet WHERE CanCheck = \'t\' AND Modified < %s', (since,))
+  dbResults = getAll('''SELECT 
+      ls.Name,
+      ls.Price,
+      ls.OriginalPrice,
+      ls.Discount,
+      COALESCE(ls.Retiring, FALSE),
+      COALESCE(ls.New, FALSE),
+      ls.Modified,
+      ls.SetId,
+      COALESCE(lt.Track, FALSE),
+      COALESCE(lt.Have, FALSE) FROM LegoSet WHERE CanCheck = \'t\' AND Modified < %s''', (since,))
   results = [LegoSet(current) for current in dbResults]
   return results
 
 def getUpdatedSets(since):
-  dbResults = getAll('SELECT SetId FROM LegoSet WHERE Modified > %s', (since,))
+  dbResults = getAll('''SELECT 
+      ls.Name,
+      ls.Price,
+      ls.OriginalPrice,
+      ls.Discount,
+      COALESCE(ls.Retiring, FALSE),
+      COALESCE(ls.New, FALSE),
+      ls.Modified,
+      ls.SetId,
+      COALESCE(lt.Track, FALSE),
+      COALESCE(lt.Have, FALSE) FROM LegoSet WHERE Modified > %s''', (since,))
   results = [LegoSet(current) for current in dbResults]
   return results
 
