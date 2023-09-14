@@ -3,7 +3,7 @@
 import json
 import cgitb
 import psycopg2 as db
-from legoSet import LegoSet
+from service.legoSet import LegoSet
 
 cgitb.enable()
 
