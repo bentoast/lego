@@ -2,8 +2,8 @@
 
 class LegoSet:
   def __init__(self, dbdata = None, format='db'):
+    print(dbdata)
     if (dbdata != None and format == 'db'):
-      print(dbdata)
       self.name = dbdata.get('Name')
       self.categories = []
       self.originalPrice = dbdata.get('OriginalPrice')
