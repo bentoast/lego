@@ -85,7 +85,7 @@ def ScrapeSite(site, xpath):
       if setInfo != None:
         results[setInfo.setid] = setInfo
   except urllib.error.HTTPError as err:
-    ms.SendMessage('html', 'Error - The Lab', f'{site}\r\n{err.code}\r\n{err.reason}\r\nurllib error\r\n')
+    SendMessage('html', 'Error - The Lab', f'{site}\r\n{err.code}\r\n{err.reason}\r\nurllib error\r\n')
     return results
   except http.client.IncompleteRead:
     return ScrapeSite(site, xpath)

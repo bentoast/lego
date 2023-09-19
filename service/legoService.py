@@ -3,7 +3,7 @@
 import json
 import cgitb
 import psycopg2 as db
-from service.legoSet import LegoSet
+from legoSet import LegoSet
 
 cgitb.enable()
 
@@ -21,7 +21,7 @@ def getAll(statement, params):
   cur = con.cursor()
   
   cur.execute(statement, params)
-  fields = [desc[0] for desc in cur.description]
+  fields = [desc[0].lower() for desc in cur.description]
   return [dict(zip(fields, row)) for row in cur.fetchall()]
     
 def getOne(statement, params):
@@ -33,7 +33,7 @@ def getOne(statement, params):
   cur = con.cursor()
   
   cur.execute(statement, params)
-  fields = [desc[0] for desc in cur.description]
+  fields = [desc[0].lower() for desc in cur.description]
   return dict(zip(fields, cur.fetchone()))
     
 def insertrow(statement, params):
