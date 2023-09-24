@@ -6,8 +6,8 @@ import json
 import cgi
 import cgitb
 import service.legoService as ls
-import legofinder as lf
-from service.legoSet import LegoSet
+import api.legofinder as lf
+from models import LegoSet
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
 #TODO remove all of the SQL from here and put it in the service

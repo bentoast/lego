@@ -1,10 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 15.1
--- Dumped by pg_dump version 15.1
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -33,8 +26,3 @@ CREATE TABLE public.legotrack (
 
 
 ALTER TABLE public.legotrack OWNER TO lego;
-
---
--- PostgreSQL database dump complete
---
-
