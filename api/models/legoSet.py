@@ -1,20 +1,7 @@
-#!/usr/bin/env python3
-
 class LegoSet:
-  def __init__(self, dbdata = None, format='db'):
-    if (dbdata != None and format == 'db'):
-      self.name = dbdata.get('Name')
-      self.categories = []
-      self.originalPrice = dbdata.get('OriginalPrice')
-      self.salePrice = dbdata.get('Price')
-      self.discount = dbdata.get('Discount')
-      self.setid = dbdata.get('SetId')
-      self.retiring = dbdata.get('Retiring')
-      self.new = dbdata.get('New')
-      self.modified = dbdata.get('Modified')
-      self.cancheck = dbdata.get('CanCheck')
-    elif (dbdata != None and format == 'json'):
-      self.importJson(dbdata)
+  def __init__(self, dataDict = None):
+    if dataDict != None:
+      self.importData(dataDict)
     else:
       self.name = None
       self.categories = []
@@ -28,27 +15,26 @@ class LegoSet:
       self.cancheck = False
 
   def __repr__(self):
-    desc = '{} - {}: {}'.format(self.setid, self.name, self.salePrice)
+    desc = f'{self.setid} - {self.name}: {self.salePrice}'
     if self.discount != 0:
-      desc = '{} ({:%} {})'.format(desc, self.discount, self.originalPrice)
+      desc = f'{desc} ({self.discount:%} {self.originalPrice})'
     if self.retiring:
-      desc = '{} (Retiring)'.format(desc)
+      desc = f'{desc} (Retiring)'
     if self.new:
-      desc = '{} (New)'.format(desc)
+      desc = f'{desc} (New)'
     return desc
 
-  def importJson(self, jsondata):
-    self.setid = jsondata['setid'] if 'setid' in jsondata else None
-    self.originalPrice = jsondata['originalprice'] if 'originalprice' in jsondata else None
-    self.salePrice = jsondata['saleprice'] if 'saleprice' in jsondata else None
-    self.discount = jsondata['discount'] if 'discount' in jsondata else 0
-    self.name = jsondata['name'] if 'name' in jsondata else None
-    self.new = jsondata['new'] if 'new' in jsondata else False
-    self.retiring = jsondata['retiring'] if 'retiring' in jsondata else False
-    self.cancheck = jsondata['cancheck'] if 'cancheck' in jsondata else False
-    self.modified = jsondata['modified'] if 'modified' in jsondata else None
+  def importData(self, dataDict):
+    self.setid = dataDict['setid'] if 'setid' in dataDict else None
+    self.originalPrice = dataDict['originalprice'] if 'originalprice' in dataDict else None
+    self.salePrice = dataDict['saleprice'] if 'saleprice' in dataDict else None
+    self.discount = dataDict['discount'] if 'discount' in dataDict else 0
+    self.name = dataDict['name'] if 'name' in dataDict else None
+    self.new = dataDict['new'] if 'new' in dataDict else False
+    self.retiring = dataDict['retiring'] if 'retiring' in dataDict else False
+    self.cancheck = dataDict['cancheck'] if 'cancheck' in dataDict else False
+    self.modified = dataDict['modified'] if 'modified' in dataDict else None
     self.categories = []
       
-  def exportJson(self):
-    jsonString = '{{ "name": "{}", "price": {}, "originalprice": {}, "retiring": {}, "new": {}, "discount": {}, "modified": "{}", "cancheck": {}, "setid": {} }}'.format(self.name, self.salePrice, self.originalPrice, self.retiring, self.new, self.discount, self.modified, self.cancheck, self.setid)
-    return jsonString
+  def toJson(self):
+    return f'{{ "name": "{self.name}", "price": {self.salePrice}, "originalprice": {self.originalPrice}, "retiring": {self.retiring}, "new": {self.name}, "discount": {self.discount}, "modified": "{self.modified}", "cancheck": {self.cancheck}, "setid": {self.setid} }}'

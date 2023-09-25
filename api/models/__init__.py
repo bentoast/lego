@@ -1,2 +1,2 @@
-from legoSet import *
-from legoTrack import *
+from .legoSet import *
+from .legoTrack import *

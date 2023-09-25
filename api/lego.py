@@ -5,9 +5,9 @@ import sys
 import json
 import cgi
 import cgitb
-import service.legoService as ls
 import api.legofinder as lf
 from models import LegoSet
+from services import DatabaseService
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
 #TODO remove all of the SQL from here and put it in the service
@@ -69,19 +69,19 @@ def getSets(filter, order, asc, count, page):
 
   bottomClause = bottomClause + ' AND '.join(clauses)
 
-  countStatement = 'SELECT COUNT(*) {}'.format(bottomClause)
-  countResult = ls.getOne(countStatement, params)
+  countStatement = f'SELECT COUNT(*) {bottomClause}'
+  countResult = ls.executeQuery(countStatement, params)[0]
 
   direction = 'DESC'
   if asc:
     direction = 'ASC'
 
   if count > 0:
-    statement = '''{} {} ORDER BY {} {} LIMIT {} OFFSET {}'''.format(statement, bottomClause, order, direction, count, (page - 1) * count)
+    statement = f'''{statement} {bottomClause} ORDER BY {order} {direction} LIMIT {count} OFFSET {(page - 1) * count}'''
   else:
-    statement = '''{} {}'''.format(statement, bottomClause)
+    statement = f'''{statement} {bottomClause}'''
     
-  results = ls.getAll(statement, params)
+  results = ls.executeQuery(statement, params)
   final = []
   for current in results:	
     f = '''{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": {}, "have": {} }}'''.format(current[0].replace('"', '\\"'), current[1], current[2], current[3], str(current[4]).lower(), str(current[5]).lower(), current[6], current[7], str(current[8]).lower(), str(current[9]).lower())
@@ -115,23 +115,24 @@ def MultipleRequest(request):
 
   (allCount, allLines) = getSets(filter, request['order'], 'asc' in request and request['asc'], count, page)
 
-  print('{{ "total": {}, "page": {}, "results": [{}]}}'.format(allCount, page, ','.join(allLines)))
+  print(f'{{ "total": {allCount}, "page": {page}, "results": [{",".join(allLines)}]}}')
   
 def SingleRequest(request):
   updatedSet = lf.FindSingleSet(request['setid'])
   if updatedSet != None:
-    print('''[{{ "name": "{}", "price": {}, "originalprice": {}, "discount": {}, "retiring": {}, "new": {}, "modified": "{}", "setid": "{}", "tracked": false, "have": false }}]'''.format(updatedSet.name.replace('"', '\\"'), updatedSet.salePrice, updatedSet.originalPrice, updatedSet.discount, str(updatedSet.retiring).lower(), str(updatedSet.new).lower(), updatedSet.modified, updatedSet.setid))
+    modifiedName = updatedSet.name.replace('"', '\\"')
+    print(f'''[{{ "name": "{modifiedName}", "price": {updatedSet.salePrice}, "originalprice": {updatedSet.originalPrice}, "discount": {updatedSet.discount}, "retiring": {str(updatedSet.retiring).lower()}, "new": {str(updatedSet.new).lower()}, "modified": "{updatedSet.modified}", "setid": "{updatedSet.setid}", "tracked": false, "have": false }}]''')
   else:
     print('[{{"status": "failure", "setcount": 0 }}]')
   
 def UpdateRequest(jsondata):
-  countResult = ls.getOne('SELECT COUNT(*) FROM LegoTrack WHERE SetId = %s AND UserId = %s', (jsondata['setid'], 1))
+  countResult = ls.executeQuery('SELECT COUNT(*) FROM LegoTrack WHERE SetId = %s AND UserId = %s', (jsondata['setid'], 1))[0]
   
   statement = 'UPDATE LegoTrack SET Track = %s, Have = %s WHERE SetId = %s AND UserId = %s;'
   if countResult != None and countResult[0] == 0:
     statement = 'INSERT INTO LegoTrack (Track, Have, SetId, UserId) VALUES (%s, %s, %s, %s);'
     
-  ls.updaterow(statement, (jsondata['tracked'], jsondata['have'], jsondata['setid'], 1))
+  ls.executeNonQuery(statement, (jsondata['tracked'], jsondata['have'], jsondata['setid'], 1))
   
   print('{{"status":"success"}}')
 
