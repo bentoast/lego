@@ -4,20 +4,23 @@ class LegoSetService:
   def __init__(self, databaseService) -> None:
     self.databaseService = databaseService
 
-  def getSetById(self, setid):
+  def getSetById(self, setid) -> LegoSet:
     dbResults = self.databaseService.executeQuery('''SELECT * FROM LegoSet WHERE SetId = %s''', (setid,))
-    if dbResults == None:
+    if dbResults == None or len(dbResults) == 0:
       return None
     return LegoSet(dbResults[0])
+  
+  def hasSet(self, setid) -> bool:
+    dbResults = self.databaseService.executeQuery('''SELECT COUNT(*) AS SetCount FROM LegoSet WHERE SetId = %s''', (setid,))
+    if dbResults == None or len(dbResults) == 0:
+      return False
+    return dbResults[0]['setcount'] > 0
 
   def disableCheck(self, setid):
     return self.databaseService.executeNonQuery('UPDATE LegoSet SET CanCheck = \'f\' WHERE SetId = %s', (setid,))
 
   def saveSet(self, set):
-    #Check for existing set
-    setcount = self.databaseService.executeQuery('SELECT COUNT(*) AS SetCount FROM LegoSet WHERE SetId = %s', (set.setid,))[0]
-
-    if setcount['setcount'] == 0:
+    if not self.hasSet(set.setid):
       self.databaseService.executeNonQuery('''
         INSERT INTO LegoSet (Name, Price, OriginalPrice, Discount, Retiring, New, Modified, CanCheck, SetId)
         VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s, %s)''', (set.name, set.salePrice, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
@@ -72,23 +75,9 @@ class LegoSetService:
     return results
 
   def hasChanges(self, item):
-    #This is now super wrong
     try:
-      dbset = self.databaseService.executeQuery('''
-      SELECT
-        Name,
-        Price,
-        OriginalPrice,
-        Discount,
-        Retiring,
-        New,
-        Modified,
-        SetId
-      FROM LegoSet
-      WHERE
-        SetId = %s''', (item.setid,))
-      if dbset == None or dbset[0] != item.name or dbset[1] != item.salePrice or dbset[2] != item.originalPrice or \
-        dbset[3] != item.discount or dbset[4] != item.retiring or dbset[5] != item.new:
+      existing = self.getSetById(item.setid)
+      if existing == None or item != existing:
         return True
     except:
       return False

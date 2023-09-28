@@ -12,7 +12,7 @@ class LegoSet:
       self.retiring = False
       self.new = False
       self.modified = None
-      self.cancheck = False
+      self.cancheck = True
 
   def __repr__(self):
     desc = f'{self.setid} - {self.name}: {self.salePrice}'
@@ -23,6 +23,17 @@ class LegoSet:
     if self.new:
       desc = f'{desc} (New)'
     return desc
+  
+  def __eq__(self, other):
+    return (
+      self.name == other.name
+      and self.salePrice == other.salePrice
+      and self.originalPrice == other.originalPrice
+      and self.discount == other.discount
+      and self.setid == other.setid
+      and self.new == other.new
+      and self.retiring == other.retiring
+    )
 
   def importData(self, dataDict):
     self.setid = dataDict['setid'] if 'setid' in dataDict else None
