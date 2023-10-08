@@ -61,9 +61,7 @@ class LegoController:
     #This is common to all requests
     print('Content-type: application/javascript')
     print()
-    print('{{"status":"success"}}')
-
-  def other(self, requestData):
+    
     #Here are all of our commands so far.
     #Eventually, this will probably need to be different
     if requestData['action'] in self.routes:
