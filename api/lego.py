@@ -17,11 +17,6 @@ def FormatFormData(formdata):
   return f'{{ "action": "{formdata["action"].value}", "parameters": {{ {parameters} }} }}'
 
 if __name__ == '__main__':
-  print('Content-type: application/javascript')
-  print()
-  print('{"name":"lego"}')
-
-def test():
   config = Configuration('/home/toast/Projects/lego/api/settings-local.ini')
   db = DatabaseService(config)
   ls = LegoSetService(db)
