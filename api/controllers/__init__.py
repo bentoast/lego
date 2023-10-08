@@ -1,1 +1,1 @@
-from legoController import *
+from .legoController import *

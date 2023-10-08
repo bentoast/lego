@@ -6,11 +6,11 @@ import json
 import cgi
 import cgitb
 
-cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
-
 from configuration import Configuration
 from services import DatabaseService, LegoSetService, LegoTrackService
 from controllers import LegoController
+
+cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
 
 def FormatFormData(formdata):
   parameters = ', '.join([f'"{key}": "{formdata[key].value}"' for key in formdata.keys() if key != 'action'])
