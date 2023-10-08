@@ -48,4 +48,4 @@ class LegoSet:
     self.categories = []
       
   def toJson(self):
-    return f'{{ "name": "{self.name}", "price": {self.salePrice}, "originalprice": {self.originalPrice}, "retiring": {self.retiring}, "new": {self.name}, "discount": {self.discount}, "modified": "{self.modified}", "cancheck": {self.cancheck}, "setid": {self.setid} }}'
+    return f'{{ "name": "{self.name}", "price": {self.salePrice}, "originalprice": {self.originalPrice}, "retiring": {self.retiring}, "new": {self.new}, "discount": {self.discount}, "modified": "{self.modified}", "cancheck": {self.cancheck}, "setid": {self.setid} }}'
