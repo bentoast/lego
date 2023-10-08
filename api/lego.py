@@ -20,7 +20,8 @@ if __name__ == '__main__':
   config = Configuration('/home/toast/Projects/lego/api/settings-local.ini')
   db = DatabaseService(config)
   ls = LegoSetService(db)
-  lc = LegoController(ls)
+  lt = LegoTrackService(db)
+  lc = LegoController(ls, lt)
 
   #Discover request being made
   if 'REQUEST_METHOD' in os.environ:
