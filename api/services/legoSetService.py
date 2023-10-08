@@ -154,4 +154,4 @@ class LegoSetService:
       statement = f'''{statement} {bottomClause}'''
       
     results = self.databaseService.executeQuery(statement, params)
-    return (countResult, [LegoSet(current) for current in results])
+    return (countResult['count'], [LegoSet(current) for current in results])
