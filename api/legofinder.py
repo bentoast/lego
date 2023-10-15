@@ -114,6 +114,7 @@ def SendSetEmail(setList):
   ms.SendMessage('html', 'Changes - The Lab', emailBody)
   
 if __name__ == '__main__':
+  print('legofinder.py running')
   categoryList = ['sales-and-deals', 'retiring-soon', 'new-sets-and-products']
   date = datetime.datetime.now()
   
