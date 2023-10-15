@@ -25,6 +25,8 @@ class LegoSet:
     return desc
   
   def __eq__(self, other):
+    if (other == None):
+      return False
     return (
       self.name == other.name
       and self.salePrice == other.salePrice
