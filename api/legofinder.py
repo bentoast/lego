@@ -4,6 +4,7 @@ import datetime
 import urllib.request
 import http.client
 import ssl
+import os
 from lxml import html
 from decimal import Decimal
 
@@ -11,7 +12,7 @@ from configuration import Configuration
 from models import LegoSet
 from services import MessageService, DatabaseService, LegoSetService
 
-config = Configuration('./settings-local.ini')
+config = Configuration(os.path.join(os.path.dirname(__file__), 'settings-local.ini'))
 ms = MessageService(config)
 db = DatabaseService(config)
 ls = LegoSetService(db)
