@@ -1,9 +1,10 @@
 from models import LegoTrack
 
 class LegoController:
-  def __init__(self, legoSetService, legoTrackService) -> None:
+  def __init__(self, legoSetService, legoTrackService, scrapingService) -> None:
     self.legoSetService = legoSetService
     self.legoTrackService = legoTrackService
+    self.scrapingService = scrapingService
 
     self.routes = {
       'single': self.SingleRequest,
@@ -39,10 +40,11 @@ class LegoController:
     print(f'{{ "total": {allCount}, "page": {page}, "results": [{",".join([ls.toJson() for ls in allSets])}]}}')
     
   def SingleRequest(self, request):
-    updatedSet = self.databaseService.FindSingleSet(request['setid'])
-    if updatedSet != None:
-      modifiedName = updatedSet.name.replace('"', '\\"')
-      print(f'''[{{ "name": "{modifiedName}", "price": {updatedSet.salePrice}, "originalprice": {updatedSet.originalPrice}, "discount": {updatedSet.discount}, "retiring": {str(updatedSet.retiring).lower()}, "new": {str(updatedSet.new).lower()}, "modified": "{updatedSet.modified}", "setid": "{updatedSet.setid}", "tracked": false, "have": false }}]''')
+    updatedSet = self.scrapingService.ScrapeSite(f'https://lego.com/en-us/product/{request["setid"]}', '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]')
+
+    if len(updatedSet) > 0:
+      self.legoSetService.saveSet(updatedSet[0])
+      print(f'''[{updatedSet[0].toJson()}]''')
     else:
       print('[{{"status": "failure", "setcount": 0 }}]')
     
