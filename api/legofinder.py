@@ -136,5 +136,5 @@ if __name__ == '__main__':
     if len(foundSets) == 0:
       ls.disableCheck(current[0])
 
-  sets = ls.getUpdatedSets(date - datetime.timedelta(days=1))
+  sets = ls.getUpdatedSets(date - datetime.timedelta(minutes=10))
   SendSetEmail(sets)
