@@ -7,7 +7,7 @@ import cgi
 import cgitb
 
 from configuration import Configuration
-from services import DatabaseService, LegoSetService, LegoTrackService
+from services import DatabaseService, LegoSetService, LegoTrackService, ScrapingService
 from controllers import LegoController
 
 cgitb.enable(1, '/home/toast/Projects/lego', 5, 'text')
@@ -19,9 +19,10 @@ def FormatFormData(formdata):
 if __name__ == '__main__':
   config = Configuration(os.path.join(os.path.dirname(__file__), 'settings-local.ini'))
   db = DatabaseService(config)
+  ss = ScrapingService(config)
   ls = LegoSetService(db)
   lt = LegoTrackService(db)
-  lc = LegoController(ls, lt)
+  lc = LegoController(ls, lt, ss)
 
   #Discover request being made
   if 'REQUEST_METHOD' in os.environ:
