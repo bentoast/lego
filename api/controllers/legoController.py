@@ -43,8 +43,9 @@ class LegoController:
     updatedSet = self.scrapingService.ScrapeSite(f'https://lego.com/en-us/product/{request["setid"]}', '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]')
 
     if len(updatedSet) > 0:
-      self.legoSetService.saveSet(updatedSet[int(request['setid'])])
-      print(f'''[{updatedSet[0].toJson()}]''')
+      setid = int(request['setid'])
+      self.legoSetService.saveSet(updatedSet[setid])
+      print(f'''[{updatedSet[setid].toJson()}]''')
     else:
       print('[{{"status": "failure", "setcount": 0 }}]')
     
