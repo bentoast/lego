@@ -23,7 +23,7 @@ class LegoSetService:
     if not self.hasSet(set.setid):
       self.databaseService.executeNonQuery('''
         INSERT INTO LegoSet (Name, Price, OriginalPrice, Discount, Retiring, New, Modified, CanCheck, SetId)
-        VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s, %s)''', (set.name, set.salePrice, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
+        VALUES (%s, %s, %s, %s, %s, %s, NOW(), %s, %s)''', (set.name, set.price, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
     else:
       self.databaseService.executeNonQuery('''
         UPDATE LegoSet SET
@@ -36,7 +36,7 @@ class LegoSetService:
           Modified = NOW(),
           CanCheck = %s
         WHERE
-          SetId = %s''', (set.name, set.salePrice, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
+          SetId = %s''', (set.name, set.price, set.originalPrice, set.discount, set.retiring, set.new, set.cancheck, set.setid))
 
   def getUncheckedSets(self, since):
     dbResults = self.databaseService.executeQuery('''SELECT 

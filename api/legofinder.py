@@ -29,12 +29,12 @@ def SendSetEmail(setList):
   emailBody = f'{emailBody}<tr><td colspan="2">New Sets</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'
   newsets = list(filter(lambda s: s.new and s.originalPrice != None, setList))
   for current in newsets:
-    emailBody = f'{emailBody}<tr><td><a href="https://lego.com/en-us/product/{current.setid}">{current.name}</a></td><td>{current.salePrice or current.originalPrice}</td></tr>\r\n'
+    emailBody = f'{emailBody}<tr><td><a href="https://lego.com/en-us/product/{current.setid}">{current.name}</a></td><td>{current.price or current.originalPrice}</td></tr>\r\n'
 
   emailBody = f'{emailBody}<tr><td colspan="2">Price Changes</td></tr><tr><td>Set</td><td>Price</td></tr>\r\n'
   priceChange = list(filter(lambda s: not(s.new or s.retiring) and s.originalPrice != None, setList))
   for current in priceChange:
-    emailBody = f'{emailBody}<tr><td><a href="https://lego.com/en-us/product/{current.setid}">{current.name}</a></td><td>{current.salePrice or current.originalPrice}</td></tr>\r\n'
+    emailBody = f'{emailBody}<tr><td><a href="https://lego.com/en-us/product/{current.setid}">{current.name}</a></td><td>{current.price or current.originalPrice}</td></tr>\r\n'
 
   emailBody = f'{emailBody}</table>'
 
