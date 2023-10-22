@@ -60,7 +60,7 @@ if __name__ == '__main__':
   for current in sets:
     foundSets = ss.ScrapeSite(f'https://lego.com/en-us/product/{current.setid}', '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]')
     if len(foundSets) == 0:
-      ls.disableCheck(current[0])
+      ls.disableCheck(current.setid)
 
   sets = ls.getUpdatedSets(date - datetime.timedelta(minutes=10))
   SendSetEmail(sets)

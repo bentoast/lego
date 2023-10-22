@@ -61,13 +61,13 @@ class ScrapingService:
       for currentPrice in price:
         modifiedPrice = Decimal(currentPrice[1:])
         currentSet.originalPrice = modifiedPrice
-        currentSet.salePrice = modifiedPrice
+        currentSet.price = modifiedPrice
       
       priceOld = element.xpath('.//span[@data-test="product-price-sale"]/text()')
       priceOld.extend(element.xpath('.//span[@data-test="product-leaf-discounted-sale"]/text()'))
       for currentOld in priceOld:
         modifiedOld = Decimal(currentOld[1:])
-        currentSet.salePrice = modifiedOld
+        currentSet.price = modifiedOld
       
       discount = element.xpath('.//div[@data-test="sale-percentage"]/text()')
       discount.extend(element.xpath('.//span[@data-test="product-leaf-discounted-badge"]/text()'))

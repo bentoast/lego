@@ -78,12 +78,9 @@ class LegoSetService:
     try:
       existing = self.getSetById(item.setid)
       if existing == None or item != existing:
-        print(f'Changes found for {item.setid}')
         return True
     except:
-      print(f'Error checking for changes for {item.setid}')
       return False
-    print(f'No changes found for {item.setid}')
     return False
     
   def getFilteredSets(self, filter, order, asc, count, page):
