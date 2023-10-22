@@ -54,7 +54,7 @@ if __name__ == '__main__':
       pageNumber = pageNumber + 1
       if len(foundSets) == 0:
         break
-      [ls.saveSet(current) for current in foundSets.values()]
+      [ls.saveSet(current) for current in foundSets.values() if ls.hasChanges(current)]
 
   sets = ls.getUncheckedSets(date)
   for current in sets:
