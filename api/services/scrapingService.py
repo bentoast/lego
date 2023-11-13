@@ -29,6 +29,8 @@ class ScrapingService:
           results[setInfo.setid] = setInfo
     except http.client.IncompleteRead:
       return self.ScrapeSite(site, xpath)
+    except urllib.error.HTTPError as err:
+      return results
     return results
   
   def ExtractSetInfo(self, element):
