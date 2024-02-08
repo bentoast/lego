@@ -42,7 +42,7 @@ def SendSetEmail(setList):
   
 if __name__ == '__main__':
   print('legofinder.py running')
-  categoryList = ['sales-and-deals', 'retiring-soon', 'new-sets-and-products']
+  categoryList = ['sales-and-deals', 'last-chance-to-buy', 'new-sets-and-products']
   date = datetime.datetime.now()
   
   for current in categoryList:
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
   sets = ls.getUncheckedSets(date)
   for current in sets:
-    foundSets = ss.ScrapeSite(f'https://lego.com/en-us/product/{current.setid}', '//div[@class="ProductOverviewstyles__Container-sc-1a1az6h-2 etzprq"]')
+    foundSets = ss.ScrapeSite(f'https://lego.com/en-us/product/{current.setid}', '//div[starts-with(@class, "ProductOverviewstyles__Container"]')
     if len(foundSets) == 0:
       ls.disableCheck(current.setid)
 

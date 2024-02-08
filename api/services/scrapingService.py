@@ -36,9 +36,10 @@ class ScrapingService:
   def ExtractSetInfo(self, element):
     currentSet = LegoSet()
 
-    code = element.xpath('//span[@itemprop="sku"]/text()')
+    code = element.xpath('//span[@itemprop="mpn"]/text()')
+    code.extend(element.xpath('//article/@data-test-key/text()'))
     #This will also contain product codes
-    hrefString = element.xpath('.//a[@data-test="product-image-link"]/@href')
+    hrefString = element.xpath('.//a[@data-test="product-leaf-image-link"]/@href')
     if hrefString != None and len(hrefString) > 0:
       #The URL will look like en-us/product/blah-blah-12345 or en-us/product/12345
       #So we need the last part of the URL, and the last part of that
@@ -66,13 +67,13 @@ class ScrapingService:
         currentSet.price = modifiedPrice
       
       priceOld = element.xpath('.//span[@data-test="product-price-sale"]/text()')
-      priceOld.extend(element.xpath('.//span[@data-test="product-leaf-discounted-sale"]/text()'))
+      priceOld.extend(element.xpath('.//span[@data-test="product-leaf-discounted-price"]/text()'))
       for currentOld in priceOld:
         modifiedOld = Decimal(currentOld[1:])
         currentSet.price = modifiedOld
       
       discount = element.xpath('.//div[@data-test="sale-percentage"]/text()')
-      discount.extend(element.xpath('.//span[@data-test="product-leaf-discounted-badge"]/text()'))
+      discount.extend(element.xpath('.//span[@data-test="product-leaf-discount-badge"]/text()'))
       for currentDiscount in discount:
         modifiedDiscount = Decimal(currentDiscount[:-5]) / 100
         currentSet.discount = modifiedDiscount
