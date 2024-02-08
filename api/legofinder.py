@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
   sets = ls.getUncheckedSets(date)
   for current in sets:
-    foundSets = ss.ScrapeSite(f'https://lego.com/en-us/product/{current.setid}', '//div[starts-with(@class, "ProductOverviewstyles__Container"]')
+    foundSets = ss.ScrapeSite(f'https://lego.com/en-us/product/{current.setid}', '//div[starts-with(@class, "ProductOverviewstyles__Container")]')
     if len(foundSets) == 0:
       ls.disableCheck(current.setid)
 
